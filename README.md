@@ -14,27 +14,127 @@ La tecnologias que utilizaremos en la creacion de el sistema.
 
 Proporciona instrucciones claras sobre cómo instalar y configurar el entorno de desarrollo necesario para el proyecto. Puedes dividir esto en secciones para cada tecnología o herramienta si es necesario. Aquí hay un ejemplo genérico:
 
+### (Opcional) Crea un entorno virtual
+
+Abre la Terminal (o línea de comandos):
+
+En Windows, puedes usar el cmd o PowerShell.
+En Linux/macOS, usa la terminal.
+Navega al Directorio de tu Proyecto:
+
+cd ruta/del/proyecto
+
+Crea un Entorno Virtual:
+
+
+python -m venv venv
+
+Este comando creará un directorio llamado venv que contendrá el entorno virtual.
+
+Activa el Entorno Virtual:
+
+En Windows (PowerShell):
+
+.\venv\Scripts\Activate
+
+En Linux/macOS:
+
+source venv/bin/activate
+
 ### Python
 Pasos para instalar
-1. 
-2. 
-3. 
 
-### Framework Django
-Pasos para instalar
-1. 
-2. 
-3. 
+Windows:
+Descargar Python:
 
-### Tecnología 3
-Pasos para instalar
-1. 
-2. 
-3. 
+Visita el sitio oficial de Python: Python Downloads.
+Haz clic en el botón "Downloads".
+Selecciona la versión más reciente de Python para Windows.
+
+Instalar Python:
+
+Ejecuta el archivo descargado.
+Asegúrate de marcar la casilla "Add Python x.x to PATH" durante la instalación.
+Sigue las instrucciones en pantalla.
+
+Verificar la Instalación:
+
+Abre la línea de comandos (cmd) y ejecuta:
+
+python --version
+
+Linux (Ubuntu/Debian):
+
+Verificar Python Preinstalado:
+
+Muchas distribuciones de Linux ya incluyen Python. Verifica la versión instalada ejecutando:
+
+python3 --version
+
+Instalar Python:
+
+Si no tienes Python instalado, ejecuta:
+
+sudo apt update
+sudo apt install python3
+
+Verificar la Instalación:
+
+Ejecuta:
+
+python3 --version
+macOS:
+
+Instalar Homebrew (opcional pero recomendado):
+
+Si no tienes Homebrew instalado, sigue las instrucciones en Homebrew para instalarlo.
+
+Instalar Python con Homebrew:
+
+Abre la terminal y ejecuta:
+
+brew install python
+
+Verificar la Instalación:
+
+Ejecuta:
+
+python3 --version
+
+### Dependencias
+
+Navega al Directorio del Proyecto:
+
+Abre la terminal o línea de comandos.
+Navega al directorio donde se encuentra tu archivo requirements.txt.
+
+Instala las Dependencias:
+
+Ejecuta el siguiente comando para instalar todas las dependencias listadas en requirements.txt:
+
+pip install -r requirements.txt
+Asegúrate de que tu entorno virtual esté activado antes de ejecutar este comando.
+
+Verifica la Instalación:
+
+Puedes verificar que las dependencias se hayan instalado correctamente ejecutando:
+
+pip list
+Esto mostrará todas las bibliotecas instaladas junto con sus versiones.
+
 
 ## Uso
 
-Explica cómo utilizar o ejecutar tu proyecto una vez que esté configurado.
+Primeramente migrar los modelos con los comandos:
+
+python manage.py makemigrations
+python manage.py migrate
+
+luego correr el servidor:
+
+python manage.py runserver
+
+y asegurarse de que funcione correctamente
 
 ## APIs Utilizadas
 
