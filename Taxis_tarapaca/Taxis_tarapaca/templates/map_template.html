@@ -1,0 +1,32 @@
+{% load cms_tags menu_tags sekizai_tags static %}
+
+{% block content %}
+    <div id="map"></div>
+    <div id="pricing">
+        <h2>Pricing</h2>
+        <p>Include your pricing details here.</p>
+    </div>
+
+    <script>
+        // Replace YOUR_GOOGLE_MAPS_API_KEY with your actual API key
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 37.7749, lng: -122.4194}, // Set your initial map center
+                zoom: 12 // Set the initial zoom level
+            });
+
+            // You can add markers, polygons, etc., to the map as needed
+            // Example marker:
+            var marker = new google.maps.Marker({
+                position: {lat: 37.7749, lng: -122.4194},
+                map: map,
+                title: 'Marker Title'
+            });
+        }
+    </script>
+
+    <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your actual API key -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?AIzaSyAxL8I7_TeaxN9BNY4s_wt_W4xecpN8QQ0&callback=initMap">
+    </script>
+{% endblock %}
