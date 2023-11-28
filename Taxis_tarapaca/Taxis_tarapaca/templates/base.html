@@ -26,6 +26,8 @@
 
     <body>
 
+        {% cms_toolbar %}
+
         <!-- Topbar Start -->
         <div class="container-fluid bg-light pt-3 d-none d-lg-block">
             <div class="container">
@@ -80,6 +82,33 @@
             </div>
         </div>
         <!-- Navbar End -->
+
+        <!-- Blog Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Blog Detail Start -->
+                        <div class="pb-3">
+                            <div class="blog-item">
+                                <div class="position-relative">
+                                    <img class="img-fluid w-100" src="img/blog-1.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="bg-white mb-3" style="padding: 30px;">
+                                <div class="d-flex mb-3">
+                                    <a class="text-primary text-uppercase text-decoration-none" href="">Taxis Tarapaca</a>
+                                    
+                                </div>
+                                {% block content %}{% endblock content %}
+                            </div>
+                        </div>
+                        <!-- Blog Detail End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog End -->
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
@@ -172,7 +201,6 @@
         <!-- Template Javascript -->
         <script src="{% static 'Gestion_viajes/js/main.js' %}"></script>
 
-        {% cms_toolbar %}
         {% render_block "js" %}
     </body>
 </html>
