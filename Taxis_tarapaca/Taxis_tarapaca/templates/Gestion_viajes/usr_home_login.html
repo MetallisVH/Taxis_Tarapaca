@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %} - Inicio de Sesión{% endblock title %}
+
+{% block content %}
+  <div class="login-container">
+    <h2>Iniciar Sesión</h2>
+    <form method="post" action="{% url 'usr_home_login' %}">
+      {% csrf_token %}
+      <label for="username">Usuario:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Iniciar Sesión</button>
+    </form>
+  </div>
+{% endblock content %}

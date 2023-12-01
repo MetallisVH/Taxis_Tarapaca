@@ -10,6 +10,7 @@ admin.autodiscover()
 
 urlpatterns = [
     path("sitemap.xml", sitemap, {"sitemaps": {"cmspages": CMSSitemap}}),
+    path('es/', include('Gestion_viajes.urls')),
 ]
 
 

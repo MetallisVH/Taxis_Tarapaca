@@ -178,7 +178,8 @@ INSTALLED_APPS = [
     'djangocms_style',
     'djangocms_googlemap',
     'djangocms_video',
-    'Taxis_tarapaca'
+    'Taxis_tarapaca',
+    'Gestion_viajes',
 ]
 
 LANGUAGES = (
