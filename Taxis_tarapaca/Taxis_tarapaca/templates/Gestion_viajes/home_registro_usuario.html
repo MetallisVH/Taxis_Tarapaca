@@ -7,7 +7,7 @@
   <div class="container">
     <h2>Registro de Usuario</h2>
 
-    <form method="post" action="{% url 'home_registrar_usuario' %}" autocomplete="off">
+    <form id="registroForm" method="post" action="{% url 'home_registrar_usuario' %}" autocomplete="off">
       {% csrf_token %}
 
       <div class="form-group">
@@ -83,12 +83,14 @@
       <div class="form-group">
         <label for="{{ form.password.id_for_label }}">Contraseña:</label>
         {{ form.password }}
+        <p id="contrasenaError" style="color: red;"></p>
       </div>
       <br>
 
       <div class="form-group">
         <label for="ConfirmarContrasena">Confirmar contraseña:</label>
         <input type="password" id="ConfirmarContrasena" name="confirmar_contrasena" required>
+        <p id="ConfirmarcontrasenaError" style="color: red;"></p>
       </div>
       <br>
 
@@ -97,4 +99,21 @@
 
     <p class="mt-3">¿Ya tienes una cuenta? <a href="{% url 'home_login_usuario' %}">Inicia sesión aquí</a>.</p>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#registroForm').submit(function(event) {
+        var contrasena = $('#id_password').val();
+        var confirmarContrasena = $('#ConfirmarContrasena').val();
+
+        if (contrasena !== confirmarContrasena) {
+          event.preventDefault();  // Evita que el formulario se envíe
+          $('#contrasenaError').text('Las contraseñas no coinciden.');
+          $('#ConfirmarcontrasenaError').text('Las contraseñas no coinciden.');
+        }
+      });
+    });
+  </script>
+
 {% endblock content %}

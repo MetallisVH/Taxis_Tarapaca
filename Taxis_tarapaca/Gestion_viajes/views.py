@@ -17,8 +17,7 @@ def home_registrar_usuario(request):
         
         context = {'form':form}
         
-        return render(request,'Gestion_viajes/home_registro_usuario.html',context)
-        
+        return render(request,'Gestion_viajes/home_registro_usuario.html',context)       
 
 def home_autenticar_usuario(request):
     if request.method == 'POST':
