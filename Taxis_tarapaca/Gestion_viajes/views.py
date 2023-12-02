@@ -2,8 +2,26 @@ from django.shortcuts import render, redirect
 from .forms import *
 from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
+from django.http import JsonResponse
 
 # Create your views here.
+
+def check_usuario_login(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        logged = 1 
+        
+        return JsonResponse({'logeado':logged})
+    
+    else:
+        
+        logged = 0
+        
+        return JsonResponse({'logeado':logged})
+    
 
 def home_login_usuario(request):
     return render(request, 'Gestion_viajes/home_login_usuario.html')
@@ -92,8 +110,14 @@ def usr_solicitud_reserva(request):
             reserva_usuario = form.save(commit=False)
     else:
         
-        form = ReservaUsuarioForm()
+        if usuario is not None:
         
-        context = {'form':form}
+            form = ReservaUsuarioForm()
+            
+            context = {'form':form}
+            
+            return render(request,'Gestion_viajes/usr_solicitud_reserva.html',context)
         
-        return render(request,'Gestion_viajes/usr_solicitud_reserva.html',context)
+        else:
+            
+            return render(request,'Gestion_viajes/err_frb.html')

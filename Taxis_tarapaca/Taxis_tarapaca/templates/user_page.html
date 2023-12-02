@@ -202,5 +202,26 @@
         <script src="{% static 'Gestion_viajes/js/main.js' %}"></script>
 
         {% render_block "js" %}
+
+        <script>
+            (function(){
+                console.log('xd')
+                $.ajax({
+                    url: '/auth_usr/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.logeado === 1) {
+                            console.log('Usuario legitimo.');
+                        } else {
+                            window.location.href = "http://localhost:8000/es/";   
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error al obtener la información del usuario:', error);
+                    }
+                });
+            })()
+        </script>
     </body>
 </html>
