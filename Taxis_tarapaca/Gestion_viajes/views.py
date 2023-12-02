@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 from datetime import datetime
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 #hay que importar tarifas igual
 
@@ -64,4 +64,24 @@ def home_autenticar_usuario(request):
                 usuario = Usuario.objects.get(nombre_usu=username)
             except:
                 usuario = None
+        
+        print(usuario)
+        print(usuario.password)
+                
+        if usuario is not None and check_password(password,usuario.password):
+            
+            request.session['user'] = usuario.id
+            
+            return redirect('http://localhost:8000/es/Usrs/')     
+        else:
+            
+            err_m = 'Credenciales incorrectas intente nuevamente.'
+            
+            context = {'error':err_m}
+            
+            return render(request,'Gestion_viajes/home_login_usuario.html',context)
+    else:
+        
+        return redirect('home_login_usuario')
+            
         

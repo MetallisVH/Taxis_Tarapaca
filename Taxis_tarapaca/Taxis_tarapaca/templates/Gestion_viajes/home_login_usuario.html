@@ -6,8 +6,11 @@
 {% block content %}
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <form method="post" action="{% url 'home_login_usuario' %}">
+    <form method="post" action="{% url 'home_autenticar_usuario' %}">
       {% csrf_token %}
+      
+      {% if error%}{{error}}{% endif %}
+
       <label for="username">Usuario:</label>
       <input type="text" id="username" name="username" required>
 
