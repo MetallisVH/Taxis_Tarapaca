@@ -83,5 +83,3 @@ def home_autenticar_usuario(request):
     else:
         
         return redirect('home_login_usuario')
-            
-        
