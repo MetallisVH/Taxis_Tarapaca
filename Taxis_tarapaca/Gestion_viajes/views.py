@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .forms import *
+from datetime import datetime
+from django.contrib.auth.hashers import make_password
+
 #hay que importar tarifas igual
 
 # Create your views here.
@@ -11,7 +14,33 @@ def home_registrar_usuario(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
+            
+            nuevo_usu = form.save(commit=False)
+            
+            genero = request.POST.get('genero',None)
+            
+            if genero is not None and genero == 'otro':
+                
+                genero = request.POST.get('otro_genero')
+                
+            fecha_nacimiento = nuevo_usu.fecha_nacimiento
+
+            fecha_actual = datetime.now().date()
+
+            edad = fecha_actual.year - fecha_nacimiento.year - ((fecha_actual.month, fecha_actual.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+            
+            nuevo_usu.created_at = fecha_actual
+            
+            nuevo_usu.edad = edad
+            
+            nuevo_usu.genero = genero
+            
+            nuevo_usu.password = make_password(nuevo_usu.password)
+            
+            nuevo_usu.save()
+            
+            return render(request,'Gestion_viajes/home_registro_usuario_exito.html')
+            
     else:
         form = UsuarioForm()
         
@@ -25,4 +54,14 @@ def home_autenticar_usuario(request):
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
         
+        try:
+            usuario = Usuario.objects.get(email=username)
+        except:
+            usuario = None
+        
+        if usuario is None:
+            try:
+                usuario = Usuario.objects.get(nombre_usu=username)
+            except:
+                usuario = None
         

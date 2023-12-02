@@ -94,6 +94,14 @@
       </div>
       <br>
 
+      <div class="form-group">
+        <label for="{{ form.genero.id_for_label }}">Genero:</label>
+        {{ form.genero }}
+        <input type="text" id="otroGenero" name="otro_genero" style="display: none;" placeholder="Ingrese su género">
+      </div>
+      <br>
+      
+
       <button type="submit" class="btn btn-primary">Registrarse</button>
     </form>
 
@@ -113,6 +121,17 @@
           $('#ConfirmarcontrasenaError').text('Las contraseñas no coinciden.');
         }
       });
+
+
+      $('#id_genero').change(function() {
+        var generoSeleccionado = $(this).val();
+        if (generoSeleccionado === 'otro') {
+          $('#otroGenero').show();
+        } else {
+          $('#otroGenero').hide();
+        }
+      });
+
     });
   </script>
 

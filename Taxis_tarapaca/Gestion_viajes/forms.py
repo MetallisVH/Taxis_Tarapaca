@@ -3,6 +3,9 @@ from .models import Usuario
 from datetime import date
 
 class UsuarioForm(forms.ModelForm):
+    
+    genero = forms.ChoiceField(choices=[('M','Masculino'),('F','Femenino'),('otro','Otro'),('prefiero_no_contestar','Prefiero No Contestar')], widget=forms.Select(attrs={}))
+    
     class Meta:
         model = Usuario
         fields = ['nombre', 'run', 'dv', 'apellido_p', 'apellido_m', 'nombre_usu', 'fecha_nacimiento', 'edad', 'email', 'prefijo', 'telefono', 'password', 'tipo_calle', 'direccion','genero']
