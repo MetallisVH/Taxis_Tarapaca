@@ -1,5 +1,19 @@
 from django.db import models
 
+class TiposTarifa(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    tipo = models.IntegerField(null=True,blank=True)
+    nombre = models.CharField(max_length=54,blank=True,null=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+
+class Tarifa(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    tipo_tarifa = models.ForeignKey(TiposTarifa,on_delete=models.SET_NULL,blank=True,null=True,default=None)
+    monto_tarifa = models.IntegerField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+
 class Log(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     accion = models.TextField(null=True,blank=True)
@@ -80,3 +94,19 @@ class Usuario(models.Model):
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     
+class Reserva(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    fecha_reserva = models.DateTimeField(null=True,blank=True)
+    origen = models.CharField(max_length=254,null=True,blank=True,unique=True)
+    tipo_origen = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='reserva_torigen')
+    destino = models.CharField(max_length=54,null=True,blank=True,unique=True)
+    tipo_destino = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='reserva_tdestino')
+    cantidad_pasajeros = models.IntegerField(null=True,blank=True)
+    anulado = models.IntegerField(null=True,blank=True)
+    observacion = models.TextField(null=True,blank=True)
+    tarifa = models.ForeignKey(Tarifa,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    motivo_anulacion = models.TextField(null=True,blank=True)
+    fecha_anulacion = models.DateTimeField(null=True,blank=True)
+    estado_reserva = models.IntegerField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
