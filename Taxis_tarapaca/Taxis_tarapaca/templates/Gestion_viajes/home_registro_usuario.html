@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %} - Registro de Usuario{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <h2>Registro de Usuario</h2>
+
+    <form method="post" action="{% url 'home_registrar_usuario' %}" autocomplete="off">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+        {{ form.nombre }}
+      </div>
+      <br>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="{{ form.run.id_for_label }}">RUN:</label>
+          {{ form.run }}
+        </div>
+        <div class="form-group col-md-6">
+          <label for="{{ form.dv.id_for_label }}">-</label>
+          {{ form.dv }}
+        </div>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.apellido_p.id_for_label }}">Apellido paterno:</label>
+        {{ form.apellido_p }}
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.apellido_m.id_for_label }}">Apellido materno:</label>
+        {{ form.apellido_m }}
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.nombre_usu.id_for_label }}">Nombre de usuario:</label>
+        {{ form.nombre_usu }}
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de Nacimiento:</label>
+        {{ form.fecha_nacimiento }}
+      </div>
+      <br>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="{{ form.telefono.id_for_label }}">Teléfono:</label>
+          {{ form.prefijo }}
+        </div>
+        <div class="form-group col-md-6">
+          {{ form.telefono }}
+        </div>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Correo Electrónico:</label>
+        {{ form.email }}
+      </div>
+      <br>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="{{ form.tipo_calle.id_for_label }}">Direccion:</label>
+          {{ form.tipo_calle }}
+        </div>
+        <div class="form-group col-md-6">
+          {{ form.direccion }}
+        </div>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+        {{ form.password }}
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="ConfirmarContrasena">Confirmar contraseña:</label>
+        <input type="password" id="ConfirmarContrasena" name="confirmar_contrasena" required>
+      </div>
+      <br>
+
+      <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+
+    <p class="mt-3">¿Ya tienes una cuenta? <a href="{% url 'home_login_usuario' %}">Inicia sesión aquí</a>.</p>
+  </div>
+{% endblock content %}
