@@ -3,8 +3,6 @@ from .forms import *
 from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
 
-#hay que importar tarifas igual
-
 # Create your views here.
 
 def home_login_usuario(request):
@@ -64,9 +62,6 @@ def home_autenticar_usuario(request):
                 usuario = Usuario.objects.get(nombre_usu=username)
             except:
                 usuario = None
-        
-        print(usuario)
-        print(usuario.password)
                 
         if usuario is not None and check_password(password,usuario.password):
             
@@ -83,3 +78,22 @@ def home_autenticar_usuario(request):
     else:
         
         return redirect('home_login_usuario')
+    
+def usr_solicitud_reserva(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if request.method == 'POST':
+        
+        form = ReservaUsuarioForm(request.POST)
+        
+        if form.is_valid() and usuario is not None:
+            
+            reserva_usuario = form.save(commit=False)
+    else:
+        
+        form = ReservaUsuarioForm()
+        
+        context = {'form':form}
+        
+        return render(request,'Gestion_viajes/usr_solicitud_reserva.html',context)

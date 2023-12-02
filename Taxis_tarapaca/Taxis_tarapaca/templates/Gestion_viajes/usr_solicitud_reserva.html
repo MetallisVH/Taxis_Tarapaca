@@ -1,0 +1,50 @@
+{% extends "user_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}- GTT Reservas{% endblock title %}
+
+{% block content %}
+    <h2>Crear Reserva</h2>
+    <form method="post" action="#">
+        {% csrf_token %}
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.tipo_origen.id_for_label }}">Origen:</label>
+              {{ form.tipo_origen }}
+            </div>
+            <div class="form-group col-md-6">
+              <label for="{{ form.origen.id_for_label }}"></label>
+              {{ form.origen }}
+            </div>
+        </div>
+        <br>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+              <label for="{{ form.tipo_destino.id_for_label }}">Destino:</label>
+            {{ form.tipo_destino }}
+          </div>
+          <div class="form-group col-md-6">
+            <label for="{{ form.destino.id_for_label }}"></label>
+            {{ form.destino }}
+          </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.cantidad_pasajeros.id_for_label }}">Cantidad de pasajeros:</label>
+          {{ form.cantidad_pasajeros }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.descripcion.id_for_label }}">Descripcion o notas adicionales:</label>
+          <br>
+          {{ form.descripcion }}
+        </div>
+        <br>
+
+        <button type="submit">Guardar Reserva</button>
+    </form>
+{% endblock content %}

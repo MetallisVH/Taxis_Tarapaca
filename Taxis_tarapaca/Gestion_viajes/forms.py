@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario
+from .models import Usuario, Reserva, TiposCalle
 from datetime import date
 
 class UsuarioForm(forms.ModelForm):
@@ -23,3 +23,25 @@ class UsuarioForm(forms.ModelForm):
             'direccion': forms.TextInput(attrs={'required': 'required'}),
             'tipo_calle': forms.Select(attrs={'required': 'required'}),
         }
+        
+class ReservaUsuarioForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+            self.fields['tipo_origen'].queryset = TiposCalle.objects.exclude(nombre='Sin calle')
+            
+            self.fields['tipo_destino'].queryset = TiposCalle.objects.exclude(nombre='Sin calle')
+    
+    class Meta:
+        model = Reserva
+        fields = ['origen','tipo_origen','destino','tipo_destino','cantidad_pasajeros','descripcion']
+        
+        widgets = {
+            'cantidad_pasajeros': forms.NumberInput(attrs={'min': 1,'required':'required'}),
+            'origen': forms.TextInput(attrs={'required':'required'}),
+            'tipo_origen': forms.Select(attrs={'required':'required'}),
+            'destino': forms.TextInput(attrs={'required':'required'}),
+            'tipo_destino': forms.Select(attrs={'required':'required'}),
+        }
+        

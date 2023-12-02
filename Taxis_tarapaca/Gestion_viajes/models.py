@@ -107,6 +107,7 @@ class Reserva(models.Model):
     tarifa = models.ForeignKey(Tarifa,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     motivo_anulacion = models.TextField(null=True,blank=True)
     fecha_anulacion = models.DateTimeField(null=True,blank=True)
+    descripcion = models.TextField(null=True,blank=True)
     estado_reserva = models.IntegerField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
