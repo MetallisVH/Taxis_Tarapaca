@@ -1,10 +1,46 @@
 from django.shortcuts import render, redirect
 from .forms import *
 from datetime import datetime
+from .models import *
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
+from django.core.serializers import serialize
 
 # Create your views here.
+
+def check_ciudades(request):
+    
+    region_seleccionada = request.GET.get('region',None)
+    
+    ciudades = Ciudad.objects.filter(deleted_at=None)
+    
+    ciudades_seleccion = []
+    
+    for ciudad in ciudades:
+        if int(ciudad.region.id) == int(region_seleccionada):
+            
+            ciudades_seleccion.append(ciudad)
+    
+    ciudades_json = serialize('json', ciudades_seleccion)
+    
+    return JsonResponse(ciudades_json, safe=False)
+
+def check_comunas(request):
+    
+    ciudad_seleccionada = request.GET.get('ciudad',None)
+    
+    comunas = Comuna.objects.filter(deleted_at=None)
+    
+    comunas_seleccion = []
+    
+    for comuna in comunas:
+        if int(comuna.ciudad.id) == int(ciudad_seleccionada):
+            
+            comunas_seleccion.append(comuna)
+            
+    comunas_json = serialize('json',comunas_seleccion)
+    
+    return JsonResponse(comunas_json,safe=False)
 
 def check_usuario_login(request):
     
@@ -108,6 +144,24 @@ def usr_solicitud_reserva(request):
         if form.is_valid() and usuario is not None:
             
             reserva_usuario = form.save(commit=False)
+            
+            reserva_usuario.estado_reserva = 0
+            
+            reserva_usuario.created_at = datetime.now()
+            
+            reserva_usuario.save()
+            
+            return render(request,'Gestion_viajes/usr_solicitud_reserva_exito.html')
+        
+        else:
+            
+            error_m = 'Ocurrio un error en la solicitud, intente nuevamente.'
+            
+            context = {'error':error_m}
+            
+            return render(request,'Gestion_viajes/usr_solicitud_reserva.html',context)
+            
+            
     else:
         
         if usuario is not None:

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Usuario, Reserva, TiposCalle
-from datetime import date
+from datetime import date, datetime
 
 class UsuarioForm(forms.ModelForm):
     
@@ -35,7 +35,7 @@ class ReservaUsuarioForm(forms.ModelForm):
     
     class Meta:
         model = Reserva
-        fields = ['origen','tipo_origen','destino','tipo_destino','cantidad_pasajeros','descripcion']
+        fields = ['origen','tipo_origen','destino','tipo_destino','cantidad_pasajeros','descripcion','fecha_reserva','medio_contacto','contacto','prefijo','region','comuna','ciudad','region_destino','ciudad_destino','comuna_destino','numero_origen','numero_destino']
         
         widgets = {
             'cantidad_pasajeros': forms.NumberInput(attrs={'min': 1,'required':'required'}),
@@ -43,5 +43,9 @@ class ReservaUsuarioForm(forms.ModelForm):
             'tipo_origen': forms.Select(attrs={'required':'required'}),
             'destino': forms.TextInput(attrs={'required':'required'}),
             'tipo_destino': forms.Select(attrs={'required':'required'}),
+            'fecha_reserva': forms.DateTimeInput(attrs={'type': 'datetime-local', 'min': str(datetime.now().strftime('%Y-%m-%dT%H:%M')), 'required': 'required'}),
+            'medio_contacto': forms.Select(attrs={}),
+            'contacto': forms.TextInput(attrs={'hidden':'true'}),
+            'prefijo': forms.Select(attrs={'hidden':'true'})
         }
         

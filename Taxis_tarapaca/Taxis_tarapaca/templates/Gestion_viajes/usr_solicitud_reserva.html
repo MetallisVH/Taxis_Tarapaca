@@ -5,8 +5,28 @@
 
 {% block content %}
     <h2>Crear Reserva</h2>
-    <form method="post" action="#">
+    <form method="post" action="">
         {% csrf_token %}
+
+        {% if error %}{{ error }}{% endif %}
+
+        <div class="form-group">
+          <label for="{{ form.region.id_for_label }}">Region de origen:</label>
+          {{ form.region }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.ciudad.id_for_label }}">Ciudad de origen:</label>
+          {{ form.ciudad }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.comuna.id_for_label }}">Comuna de origen:</label>
+          {{ form.comuna }}
+        </div>
+        <br>
 
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -17,6 +37,28 @@
               <label for="{{ form.origen.id_for_label }}"></label>
               {{ form.origen }}
             </div>
+            <div class="form-group col-md-6">
+              <label for="{{ form.numero_origen.id_for_label }}">#</label>
+              {{ form.numero_origen }}
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.region_destino.id_for_label }}">Region de destino:</label>
+          {{ form.region_destino }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.ciudad_destino.id_for_label }}">Region de destino:</label>
+          {{ form.ciudad_destino }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.comuna_destino.id_for_label }}">Region de destino:</label>
+          {{ form.comuna_destino }}
         </div>
         <br>
 
@@ -29,12 +71,43 @@
             <label for="{{ form.destino.id_for_label }}"></label>
             {{ form.destino }}
           </div>
+          <div class="form-group col-md-6">
+            <label for="{{ form.numero_destino.id_for_label }}">#</label>
+            {{ form.numero_destino }}
+          </div>
         </div>
         <br>
 
         <div class="form-group">
           <label for="{{ form.cantidad_pasajeros.id_for_label }}">Cantidad de pasajeros:</label>
           {{ form.cantidad_pasajeros }}
+        </div>
+        <br>
+
+        <div class="form-group">
+          <label for="{{ form.fecha_reserva.id_for_label }}">Fecha de la reserva:</label>
+          {{ form.fecha_reserva }}
+        </div>
+        
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+              <label for="{{ form.medio_contacto.id_for_label }}">Medio de contacto:</label>
+                {{ form.medio_contacto }}
+
+              <label for="{{ form.contacto.id_for_label }}"></label>
+              <input name="contacto_correo" type="Email" id="contactoCorreo" hidden="true"></input>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  {{ form.prefijo }}
+                </div>
+                <br>
+                <div class="form-group col-md-6">
+                  <label for="{{ form.contacto.id_for_label }}"></label>
+                  {{ form.contacto }}
+                </div>
+              </div>
+          </div>
         </div>
         <br>
 
@@ -47,4 +120,141 @@
 
         <button type="submit">Guardar Reserva</button>
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Captura el evento de cambio en el campo medio_contacto
+            $('#id_medio_contacto').change(function() {
+
+                // Verifica el valor seleccionado en medio_contacto
+                var medioContacto = $(this).val();
+
+                // Muestra el campo de contacto si es necesario
+                if (medioContacto === '1') {
+                    $('#id_contacto').attr('hidden', true);
+                    $('#id_prefijo').attr('hidden', true);
+                    $('#contactoCorreo').removeAttr('hidden');
+                }
+                if (medioContacto === '2') {
+                  $('#contactoCorreo').attr('hidden', true);
+                  $('#id_contacto').removeAttr('hidden');
+                  $('#id_prefijo').removeAttr('hidden');
+                  $('#id_contacto').attr('pattern','^[0-9]+$');
+                  $('#id_contacto').attr('title','Ingrese solo números');
+                }
+                // Agrega más condiciones según sea necesario
+
+              });
+
+              $('#id_region').change(function() {
+                var regionSeleccionada = $("#id_region").val();
+    
+                $.ajax({
+                    url: "/chk_ciud/", // Reemplaza con la URL correcta de tu servidor
+                    method: "GET",
+                    data: { region: regionSeleccionada },
+                    success: function(data) {
+                      // Parsear la cadena JSON a un objeto JavaScript
+                      var ciudades = JSON.parse(data);
+          
+                      // Limpiar opciones actuales de la selección de ciudades
+                      $("#id_ciudad").empty();
+          
+                      // Iterar sobre el array de ciudades
+                      ciudades.forEach(function(ciudad) {
+                          var option = $("<option>").attr("value", ciudad.pk).text(ciudad.fields.nombre);
+                          $("#id_ciudad").append(option);
+                      });
+                  },
+                  error: function(error) {
+                      console.error("Error al cargar ciudades:", error);
+                  }
+              });
+            });
+
+            $('#id_ciudad').change(function() {
+              var ciudadSeleccionada = $("#id_ciudad").val();
+          
+              // Realizar una solicitud AJAX para obtener las comunas en base a la ciudad
+              $.ajax({
+                  url: "/chk_comn/",  // Reemplaza con la URL correcta de tu servidor
+                  method: "GET",
+                  data: { ciudad: ciudadSeleccionada },
+                  success: function(data) {
+                      // Parsear la cadena JSON a un objeto JavaScript
+                      var comunas = JSON.parse(data);
+          
+                      // Limpiar opciones actuales de la selección de comunas
+                      $("#id_comuna").empty();
+          
+                      // Iterar sobre el array de comunas
+                      comunas.forEach(function(comuna) {
+                          var option = $("<option>").attr("value", comuna.pk).text(comuna.fields.nombre);
+                          $("#id_comuna").append(option);
+                      });
+                  },
+                  error: function(error) {
+                      console.error("Error al cargar comunas:", error);
+                  }
+              });
+          });
+
+          $('#id_region_destino').change(function() {
+            var regionSeleccionada = $("#id_region_destino").val();
+
+            $.ajax({
+                url: "/chk_ciud/", // Reemplaza con la URL correcta de tu servidor
+                method: "GET",
+                data: { region: regionSeleccionada },
+                success: function(data) {
+                  // Parsear la cadena JSON a un objeto JavaScript
+                  var ciudades = JSON.parse(data);
+      
+                  // Limpiar opciones actuales de la selección de ciudades
+                  $("#id_ciudad_destino").empty();
+      
+                  // Iterar sobre el array de ciudades
+                  ciudades.forEach(function(ciudad) {
+                      var option = $("<option>").attr("value", ciudad.pk).text(ciudad.fields.nombre);
+                      $("#id_ciudad_destino").append(option);
+                  });
+              },
+              error: function(error) {
+                  console.error("Error al cargar ciudades:", error);
+              }
+          });
+        });
+
+        $('#id_ciudad_destino').change(function() {
+          var ciudadSeleccionada = $("#id_ciudad_destino").val();
+      
+          // Realizar una solicitud AJAX para obtener las comunas en base a la ciudad
+          $.ajax({
+              url: "/chk_comn/",  // Reemplaza con la URL correcta de tu servidor
+              method: "GET",
+              data: { ciudad: ciudadSeleccionada },
+              success: function(data) {
+                  // Parsear la cadena JSON a un objeto JavaScript
+                  var comunas = JSON.parse(data);
+      
+                  // Limpiar opciones actuales de la selección de comunas
+                  $("#id_comuna_destino").empty();
+      
+                  // Iterar sobre el array de comunas
+                  comunas.forEach(function(comuna) {
+                      var option = $("<option>").attr("value", comuna.pk).text(comuna.fields.nombre);
+                      $("#id_comuna_destino").append(option);
+                  });
+              },
+              error: function(error) {
+                  console.error("Error al cargar comunas:", error);
+              }
+          });
+      });
+
+
+        });
+    </script>
 {% endblock content %}
