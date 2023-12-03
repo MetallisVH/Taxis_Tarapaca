@@ -1,0 +1,26 @@
+{% extends "user_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.region.id_for_label }}">Region de origen:</label>
+            {{ form.region }}
+        </div>
+        <br>
+
+        {% if rutas %}
+
+        {% elif rutas_region %}
+
+        {% elif rutas_ciudad  %}
+
+        {% elif rutas_comuna %}
+        
+        <button type="submit">Buscar rutas</button>
+    </form>
+{% endblock content %}

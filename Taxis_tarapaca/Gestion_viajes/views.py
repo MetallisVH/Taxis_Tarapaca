@@ -175,3 +175,67 @@ def usr_solicitud_reserva(request):
         else:
             
             return render(request,'Gestion_viajes/err_frb.html')
+        
+def usr_busqueda_reserva(request):
+    
+    usuario = request.session.get('user')
+    
+    if request.method == 'POST':
+        
+        form = RutaForm(request.POST)
+        
+        if form.is_valid() and form is not None:
+        
+            if usuario is not None:
+                
+                ruta_vehiculo = form.save(commit=False)
+                
+                fecha_ruta = ruta_vehiculo.fecha_viaje
+                
+                region_origen = ruta_vehiculo.region
+                
+                ciudad_origen = ruta_vehiculo.ciudad
+                
+                comuna_origen = ruta_vehiculo.comuna
+                
+                region_destino = ruta_vehiculo.region_destino
+                
+                ciudad_destino = ruta_vehiculo.ciudad_destino
+                
+                comuna_destino = ruta_vehiculo.comuna_destino
+                
+                rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                
+                if ciudad_origen is not None and ciudad_destino is not None:
+                
+                    rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                    
+                if comuna_origen is not None and comuna_destino is not None:
+                
+                    rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                    
+                context = {'rutas_region':rutas_region,'rutas_ciudad':rutas_ciudad,'rutas_comuna':rutas_comuna}
+                
+                return render(request,'Gestion_viajes/usr_busqueda_reserva.html',context)
+            
+            else:
+                
+                form = RutaForm()
+        
+                rutas = Ruta.objects.filter(deleted_at=None)
+                
+                context = {'rutas':rutas,'form':form}
+                
+                return render(request,'Gestion_viajes/usr_busqueda_reserva.html',context)
+        
+    else:
+        
+        form = RutaForm()
+        
+        rutas = Ruta.objects.filter(deleted_at=None)
+        
+        context = {'rutas':rutas,'form':form}
+        
+        return render(request,'Gestion_viajes/usr_busqueda_reserva.html',context)
+    
+    

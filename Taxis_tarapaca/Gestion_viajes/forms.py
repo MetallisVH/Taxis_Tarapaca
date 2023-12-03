@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, Reserva, TiposCalle
+from .models import *
 from datetime import date, datetime
 
 class UsuarioForm(forms.ModelForm):
@@ -49,3 +49,17 @@ class ReservaUsuarioForm(forms.ModelForm):
             'prefijo': forms.Select(attrs={'hidden':'true'})
         }
         
+class RutaForm(forms.ModelForm):
+    class Meta:
+        model = Ruta
+        fields = ['fecha_viaje','monto_tarifa','region','ciudad','comuna','region_destino','ciudad_destino','comuna_destino']
+
+        widgets = {
+            'region': forms.Select(attrs={'required':'required'}),
+            'ciudad': forms.Select(attrs={'hidden':'true'}),
+            'comuna': forms.Select(attrs={'hidden':'true'}),
+            'region_destino': forms.Select(attrs={'required':'required'}),
+            'ciudad_destino': forms.Select(attrs={'hidden':'true'}),
+            'comuna_destino': forms.Select(attrs={'hidden':'true'}),
+            'fecha_viaje': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
