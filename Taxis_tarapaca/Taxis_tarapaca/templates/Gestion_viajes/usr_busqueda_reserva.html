@@ -4,7 +4,7 @@
 {% block title %}{% page_attribute "page_title" %}{% endblock title %}
 
 {% block content %}
-    <form method="post" action="">
+    <form method="post" action="{% url 'usr_busqueda_reserva' %}">
         {% csrf_token %}
         
         <div class="form-group">
@@ -13,13 +13,62 @@
         </div>
         <br>
 
+        <div class="form-group">
+            <label for="{{ form.ciudad.id_for_label }}" hidden="true">Ciudad de origen:</label>
+            {{ form.ciudad }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.comuna.id_for_label }}" hidden="true">Comuna de origen:</label>
+            {{ form.ciudad }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.region_destino.id_for_label }}">Region de destino:</label>
+            {{ form.region_destino }}
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label for="{{ form.ciudad_destino.id_for_label }}" hidden="true">Ciudad de destino:</label>
+            {{ form.ciudad_destino }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.comuna_destino.id_for_label }}" hidden="true">Comuna de destino:</label>
+            {{ form.ciudad_destino }}
+        </div>
+        
         {% if rutas %}
 
-        {% elif rutas_region %}
+        <label>Información de las rutas:</label>
+        <hr>
 
-        {% elif rutas_ciudad  %}
+            {% for ruta in rutas %}
 
-        {% elif rutas_comuna %}
+                <p>Ruta: {{ ruta.id }}</p>
+
+                <p>{{ ruta.region }} - {{ ruta.region_destino }}</p>
+
+                {% if ruta.ciudad is not None and ruta.ciudad_destino is not None %}
+                    <p>{{ ruta.ciudad }} - {{ruta.ciudad_destino}}</p>
+                {% endif %}
+
+                {% if ruta.comuna is not None and ruta.comuna_destino is not None %}
+                    <p>{{ ruta.comuna }} - {{ruta.comuna_destino}}</p>
+                {% endif %}
+
+                <p>Precio total: {{ ruta.monto_tarifa }} CLP</p>
+
+                <p>Fecha del viaje: {{ ruta.fecha_viaje }}<p>
+
+                Boton para reservar
+
+                <hr>
+            
+            {% endfor %}
+
+        {% endif %}
         
         <button type="submit">Buscar rutas</button>
     </form>
