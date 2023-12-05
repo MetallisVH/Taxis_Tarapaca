@@ -174,7 +174,7 @@ class Reserva(models.Model):
     
 class Ruta(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    #agregar colum,nma conductor
+    #agregar columna conductor
     origen = models.CharField(max_length=254,null=True,blank=True)
     numero_origen = models.IntegerField(null=True,blank=True)
     tipo_origen = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='ruta_torigen')
@@ -195,5 +195,15 @@ class Ruta(models.Model):
     region_destino = models.ForeignKey(Region,on_delete=models.SET_NULL,null=True,blank=True,default=None,related_name='ruta_rdestino')
     ciudad_destino = models.ForeignKey(Ciudad,on_delete=models.SET_NULL,null=True,blank=True,default=None,related_name='ruta_cidestino')
     comuna_destino = models.ForeignKey(Comuna,on_delete=models.SET_NULL,null=True,blank=True,default=None,related_name='ruta_codestino')
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class Reclamo(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    autor = models.ForeignKey(Usuario,on_delete=models.SET_NULL,null=True,blank=True,default=True)
+    reclamacion = models.TextField(null=True,blank=True)
+    estado = models.IntegerField(null=True,blank=True)
+    anulado = models.IntegerField(null=True,blank=True)
+    motivo_anulacion = models.TextField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
