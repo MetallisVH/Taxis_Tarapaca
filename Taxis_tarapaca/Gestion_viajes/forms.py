@@ -63,3 +63,15 @@ class RutaForm(forms.ModelForm):
             'comuna_destino': forms.Select(attrs={'hidden':'true'}),
             'fecha_viaje': forms.DateInput(attrs={'type': 'date','min': str(date.today())}),
         }
+        
+class ReclamoForm(forms.ModelForm):
+    class Meta:
+        model = Reclamo
+        fields = ['tipo_reclamo','autor','reclamacion','estado','anulado','tipo_contacto', 'prefijo','contacto','viaje','reserva', 'motivo_anulacion','deleted_at','created_at']
+        
+        widgets = {
+            'tipo_reclamo': forms.Select(attrs={'required':'required'}),
+            'contacto': forms.TextInput(attrs={'hidden':'true','required':'required'}),
+            'prefijo': forms.Select(attrs={'hidden':'true'}),
+            'tipo_contacto': forms.Select(attrs={'required':'required'}),
+        }

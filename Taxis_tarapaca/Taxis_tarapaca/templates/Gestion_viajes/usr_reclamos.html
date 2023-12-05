@@ -1,0 +1,113 @@
+{% extends "user_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <div class="reclamo-form">
+        <h2>Formulario de Reclamo</h2>
+
+        {% if error %}{{ error }}{% endif %}
+
+        <form method="post" action="{% url 'usr_reclamacion' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.tipo_reclamo.id_for_label }}">Tipo de reclamo:</label>
+                {{ form.tipo_reclamo }}
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label hidden="true" id="codigo_viaje" for="{{ form.viaje.id_for_label }}">Codigo de viaje:</label>
+                <input type="text" name="cod_viaje" id="id_viaje" hidden="true" pattern="[0-9]*">
+            </div>
+
+            <div class="form-group">
+                <label hidden="true" id="codigo_reserva" for="{{ form.reserva.id_for_label }}">Codigo de reserva:</label>
+                <input type="text" name="cod_reserva" id="id_reserva" hidden="true" pattern="[0-9]*">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{ form.tipo_contacto.id_for_label }}">Medio de contacto:</label>
+                      {{ form.tipo_contacto }}
+
+                    <label hidden="true" id="contacto_label" for="{{ form.contacto.id_for_label }}">Contacto:</label>
+                    <div class="form-group col-md-6">
+                        {{ form.prefijo }} 
+                    </div>
+
+                    {{ form.contacto }}
+                </div>
+              </div>
+              <br>
+            
+            <div class="form-group">
+                <label for="{{ form.reclamacion.id_for_label }}">Elabore la situacion:</label>
+                <br>
+                {{ form.reclamacion }}
+            </div>
+            
+            <button type="submit">Enviar Reclamo</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#id_tipo_contacto').change(function(){
+                if($(this).val() == "1"){
+                    $('#contacto_label').removeAttr('hidden');
+                    $('#id_contacto').attr('type','email');
+                    $('#id_prefijo').attr('hidden','true');
+                    $('#id_prefijo').removeAttr('required');
+                    $('#id_contacto').removeAttr('hidden');
+                    $('#id_contacto').attr('required','required');
+                    $('#id_contacto').val('');
+                } else if ($(this).val() == "2"){
+                    $('#contacto_label').removeAttr('hidden');
+                    $('#id_prefijo').removeAttr('hidden');
+                    $('#id_contacto').removeAttr('hidden');
+                    $('#id_contacto').attr('type', 'number');
+                    $('#id_prefijo').attr('required','required');
+                    $('#id_contacto').attr('required','required');
+                    $('#id_contacto').val('');
+                } else {
+                    $('#contacto_label').attr('hidden','true');
+                    $('#id_prefijo').removeAttr('required');
+                    $('#id_contacto').removeAttr('required');
+                    $('#id_prefijo').attr('hidden','true');
+                    $('#id_contacto').attr('hidden','true');
+                    $('#id_contacto').val('');
+                }
+            });
+
+            $('#id_tipo_reclamo').change(function(){
+                if($(this).val() == "1"){
+                    $('#codigo_reserva').attr('hidden','true');
+                    $('#id_reserva').attr('hidden','true');
+                    $('#id_reserva').removeAttr('required');
+                    $('#codigo_viaje').removeAttr('hidden');
+                    $('#id_viaje').removeAttr('hidden');
+                    $('#id_viaje').attr('required','required');
+                    $('#id_reserva').val('');
+                } else if ($(this).val() == "2"){
+                    $('#codigo_viaje').attr('hidden','true');
+                    $('#id_viaje').attr('hidden','true');
+                    $('#codigo_reserva').removeAttr('hidden');
+                    $('#id_reserva').removeAttr('hidden');
+                    $('#id_viaje').removeAttr('required');
+                    $('#id_reserva').attr('required','required');
+                    $('#id_viaje').val('');
+                } else {
+                    $('#codigo_viaje').attr('hidden','true');
+                    $('#id_viaje').attr('hidden','true');
+                    $('#codigo_reserva').attr('hidden','true');
+                    $('#id_reserva').attr('hidden','true');
+                }
+            });
+        });
+    </script>
+{% endblock content %}

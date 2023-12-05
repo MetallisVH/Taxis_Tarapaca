@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en el Ingreso del Reclamo</title>
+    <!-- Agrega cualquier enlace a hojas de estilo, scripts o metaetiquetas adicionales según tus necesidades -->
+</head>
+<body>
+
+    <h1>Error en el Ingreso del Reclamo</h1>
+
+    <p>Ha ocurrido el siguiente error al intentar ingresar su reclamo:</p>
+
+    {% if error %}
+        {{ error }}
+    {% endif %}
+
+    <!-- Puedes agregar más información o instrucciones según tus necesidades -->
+
+</body>
+</html>

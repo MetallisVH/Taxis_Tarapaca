@@ -1,5 +1,15 @@
 from django.db import models
 
+class TiposReclamo(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    nombre = models.CharField(max_length=54,null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+    def __str__(self):
+        return self.nombre
+
+
 class Pais(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     nombre = models.CharField(max_length=54,null=True,blank=True)
@@ -200,10 +210,16 @@ class Ruta(models.Model):
     
 class Reclamo(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    autor = models.ForeignKey(Usuario,on_delete=models.SET_NULL,null=True,blank=True,default=True)
+    tipo_reclamo = models.ForeignKey(TiposReclamo,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    autor = models.ForeignKey(Usuario,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     reclamacion = models.TextField(null=True,blank=True)
     estado = models.IntegerField(null=True,blank=True)
     anulado = models.IntegerField(null=True,blank=True)
+    tipo_contacto = models.ForeignKey(MediosContacto,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    prefijo = models.ForeignKey(PrefijosPais,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    contacto = models.CharField(max_length=254,null=True,blank=True)
+    viaje = models.ForeignKey(Viaje,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    reserva = models.ForeignKey(Reserva,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     motivo_anulacion = models.TextField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)

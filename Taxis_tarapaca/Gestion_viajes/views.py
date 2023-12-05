@@ -297,4 +297,107 @@ def usr_busqueda_reserva(request):
         
         return render(request,'Gestion_viajes/usr_busqueda_reserva.html',context)
     
+def usr_reclamacion(request):
     
+    usuario = request.session.get('user')
+    
+    if usuario is not None:
+    
+        if request.method == 'POST':
+            
+            usuario_sesion = Usuario.objects.get(id=usuario)
+            
+            form = ReclamoForm(request.POST)
+            
+            if form.is_valid():
+                
+                context = {}
+                
+                reclamo_usuario = form.save(commit=False)
+                
+                reclamo_usuario.autor = usuario_sesion
+                
+                reclamo_usuario.estado = 0
+                
+                reclamo_usuario.created_at = datetime.now()
+                
+                viaje = request.POST.get('cod_viaje',None)
+                
+                if viaje == '':
+                    viaje = None
+                
+                reserva = request.POST.get('cod_reserva',None)
+                
+                if reserva == '':
+                    reserva = None
+                
+                print(viaje)
+                
+                if viaje is not None:
+                    
+                    cod_viaje = viaje
+                    
+                    try:
+                    
+                        reclamo_usuario.viaje = Viaje.objects.get(id=cod_viaje)
+                        
+                    except:
+                        
+                        reclamo_usuario.viaje = None
+                        
+                        err_v = "No se encontro el viaje especificado, porfavor consulte con la empresa: +56971208446"
+                        
+                        context = {'error':err_v}
+                        
+                        return render(request,'Gestion_viajes/usr_reclamos_fail.html',context)
+                    
+                print(reserva)
+                    
+                if reserva is not None:
+                    
+                    cod_reserva = reserva
+                    
+                    print(cod_reserva)
+                    print(type(cod_reserva))
+                    
+                    try:
+                        
+                        reclamo_usuario.reserva = Reserva.objects.get(id=cod_reserva)
+                        
+                    except:
+                        
+                        reclamo_usuario.reserva = None
+                        
+                        err_r = "No se encontro la reserva especificada, porfavor consulte con la empresa: +56971208446"
+                        
+                        context = {'error':err_r}
+                        
+                        return render(request,'Gestion_viajes/usr_reclamos_fail.html',context)
+                
+                reclamo_usuario.save()
+                
+                return render(request,'Gestion_viajes/usr_reclamos_exito.html',context)
+            
+            else:
+                
+                print(form.errors)
+                
+                form = ReclamoForm()
+                
+                error = "Ocurrio un error con el ingreso de la reclamacion, intente nuevamente"
+            
+                context = {'form':form,'error':error}
+                
+                return render(request,'Gestion_viajes/usr_reclamos.html',context)
+            
+        else:
+            
+            form = ReclamoForm()
+            
+            context = {'form':form}
+            
+            return render(request,'Gestion_viajes/usr_reclamos.html',context)
+        
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
