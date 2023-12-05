@@ -209,36 +209,68 @@ def usr_busqueda_reserva(request):
                 print(region_origen)
                 print(region_destino)
                 
-                try:
-                    rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,deleted_at=None)
+                if fecha_ruta is not None:
+                    try:
+                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,fecha_viaje=fecha_ruta,deleted_at=None)
                     
-                    if rutas_region is not None:
+                        if rutas_region is not None:
                     
-                        context = {'form':form,'rutas':rutas_region}
-                except:
-                    rutas_region = None
+                            context = {'form':form,'rutas':rutas_region}
+                    except:
+                        rutas_region = None
                 
-                if ciudad_origen is not None and ciudad_destino is not None:
+                    if ciudad_origen is not None and ciudad_destino is not None:
                     
-                    try:
-                        rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,deleted_at=None)
+                        try:
+                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,fecha_viaje=fecha_ruta,deleted_at=None)
                         
-                        if rutas_ciudad is not None:
+                            if rutas_ciudad is not None:
                     
-                            context = {'form':form,'rutas':rutas_ciudad}
-                    except:
-                        rutas_ciudad = None
+                                context = {'form':form,'rutas':rutas_ciudad}
+                        except:
+                            rutas_ciudad = None
                     
-                if comuna_origen is not None and comuna_destino is not None:
+                    if comuna_origen is not None and comuna_destino is not None:
                     
-                    try:
-                        rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,deleted_at=None)
+                        try:
+                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,fecha_viaje=fecha_ruta,deleted_at=None)
                         
-                        if rutas_comuna is not None:
+                            if rutas_comuna is not None:
                     
-                            context = {'form':form,'rutas':rutas_comuna}
+                                context = {'form':form,'rutas':rutas_comuna}
+                        except:
+                            rutas_comuna = None
+                else:
+                    try:
+                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,deleted_at=None)
+                        
+                        if rutas_region is not None:
+                        
+                            context = {'form':form,'rutas':rutas_region}
                     except:
-                        rutas_comuna = None
+                        rutas_region = None
+                    
+                    if ciudad_origen is not None and ciudad_destino is not None:
+                        
+                        try:
+                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,deleted_at=None)
+                            
+                            if rutas_ciudad is not None:
+                        
+                                context = {'form':form,'rutas':rutas_ciudad}
+                        except:
+                            rutas_ciudad = None
+                        
+                    if comuna_origen is not None and comuna_destino is not None:
+                        
+                        try:
+                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,deleted_at=None)
+                            
+                            if rutas_comuna is not None:
+                        
+                                context = {'form':form,'rutas':rutas_comuna}
+                        except:
+                            rutas_comuna = None
                     
                     
                 print(context)

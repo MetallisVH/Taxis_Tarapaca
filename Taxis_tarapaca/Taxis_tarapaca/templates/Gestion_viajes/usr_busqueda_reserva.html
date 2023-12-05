@@ -38,6 +38,11 @@
             <label for="{{ form.comuna_destino.id_for_label }}" hidden="true">Comuna de destino:</label>
             {{ form.ciudad_destino }}
         </div>
+
+        <div class="form-group">
+            <label for="{{ form.fecha_viaje.id_for_label }}">Fecha del viaje:</label>
+            {{ form.fecha_viaje }}
+        </div>
         
         {% if rutas %}
 
@@ -60,14 +65,15 @@
 
                 <p>Precio total: {{ ruta.monto_tarifa }} CLP</p>
 
-                <p>Fecha del viaje: {{ ruta.fecha_viaje }}<p>
+                <p>Fecha del viaje: {{ ruta.fecha_viaje }} {{ ruta.hora_viaje }}<p>
 
                 Boton para reservar
 
                 <hr>
             
             {% endfor %}
-
+        {% elif rutas.fecha_viaje is None %}
+                    <p>No hay rutas para la fecha especificada<p>
         {% endif %}
         
         <button type="submit">Buscar rutas</button>

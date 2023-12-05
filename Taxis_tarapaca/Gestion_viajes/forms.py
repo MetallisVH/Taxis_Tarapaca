@@ -52,7 +52,7 @@ class ReservaUsuarioForm(forms.ModelForm):
 class RutaForm(forms.ModelForm):
     class Meta:
         model = Ruta
-        fields = ['monto_tarifa','region','ciudad','comuna','region_destino','ciudad_destino','comuna_destino']
+        fields = ['monto_tarifa','region','ciudad','comuna','region_destino','ciudad_destino','comuna_destino','fecha_viaje']
 
         widgets = {
             'region': forms.Select(attrs={'required':'required'}),
@@ -61,4 +61,5 @@ class RutaForm(forms.ModelForm):
             'region_destino': forms.Select(attrs={'required':'required'}),
             'ciudad_destino': forms.Select(attrs={'hidden':'true'}),
             'comuna_destino': forms.Select(attrs={'hidden':'true'}),
+            'fecha_viaje': forms.DateInput(attrs={'type': 'date','min': str(date.today())}),
         }
