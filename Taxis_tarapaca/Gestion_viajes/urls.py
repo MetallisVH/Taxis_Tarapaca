@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("auth_usr/",views.check_usuario_login,name='check_usuario_login'),
+    path("get_mtar/",views.get_monto_tarifa,name='get_monto_tarifa'),
     path("chk_comn/",views.check_comunas,name='check_comunas'),
     path("chk_ciud/",views.check_ciudades,name='check_ciudades'),
     path("home_lgn/",views.home_login_usuario,name='home_login_usuario'),
@@ -15,5 +16,6 @@ urlpatterns = [
     path("scr_admtax/",views.scr_mostrar_taxistas,name='scr_mostrar_taxistas'),
     path("scr_btax/",views.scr_buscar_taxistas,name='scr_buscar_taxistas'),
     path("scr_vtax/<int:id_taxista>/",views.scr_ver_datos_taxista,name='scr_ver_datos_taxista'),
-    path("scr_etax/<int:id_taxista>/",views.scr_editar_taxista,name="scr_editar_taxista")
+    path("scr_etax/<int:id_taxista>/",views.scr_editar_taxista,name="scr_editar_taxista"),
+    path("scr_irut/",views.scr_ingresar_ruta,name='scr_ingresar_ruta'),
 ]

@@ -8,6 +8,24 @@ from django.core.serializers import serialize
 
 # Create your views here.
 
+def get_monto_tarifa(request):
+    tipo_tarifa = request.GET.get('tipo_tarifa')
+    
+    try:
+
+        tarifa = Tarifa.objects.get(id=tipo_tarifa)
+    
+    except:
+        
+        tarifa = None
+    
+    if tarifa is not None:
+        monto = tarifa.monto_tarifa
+    else:
+        monto = 0
+    
+    return JsonResponse({'monto': monto})
+
 def check_ciudades(request):
     
     region_seleccionada = request.GET.get('region',None)
@@ -613,3 +631,34 @@ def scr_editar_taxista(request,id_taxista):
             
             return render(request,'Gestion_viajes/scr_edicion_taxista.html',context)
     
+def scr_ingresar_ruta(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'POST':
+            
+            form = IngresarRutaForm(request.POST)
+            
+            if form.is_valid():
+                
+                nueva_ruta = form.save(commit=False)
+                
+                nueva_ruta.created_at = datetime.now()
+                
+                nueva_ruta.save()
+                
+                return render(request,'Gestion_viajes/scr_registrar_ruta_exito.html')
+            
+        else:
+            
+            form = IngresarRutaForm()
+            
+            context = {'form':form}
+            
+            return render(request,'Gestion_viajes/scr_registrar_ruta.html',context)
+        
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')

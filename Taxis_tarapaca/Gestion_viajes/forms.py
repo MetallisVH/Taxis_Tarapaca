@@ -108,3 +108,13 @@ class EditarTaxistaForm(forms.ModelForm):
             'run': forms.NumberInput(attrs={}),
             'dv': forms.TextInput(attrs={}),
         }
+        
+class IngresarRutaForm(forms.ModelForm):
+    class Meta:
+        model = Ruta
+        fields = ['conductor', 'origen', 'numero_origen', 'tipo_origen', 'destino', 'numero_destino','tipo_destino', 'fecha_viaje', 'hora_viaje','descripcion', 'tipo_tarifa', 'monto_tarifa', 'region', 'ciudad', 'comuna', 'region_destino','ciudad_destino', 'comuna_destino']
+
+        widgets = {
+            'fecha_viaje': forms.DateInput(attrs={'type': 'date'}),
+            'hora_viaje': forms.TimeInput(attrs={'type': 'time'}),
+        }

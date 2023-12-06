@@ -1,0 +1,117 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <div class="ingresar-ruta">
+        <h2>Ingresar Nueva Ruta</h2>
+
+        <form method="post" action="{% url 'scr_ingresar_ruta' %}">
+            {% csrf_token %}
+            
+            <!-- Agrega campos de formulario para ingresar una nueva ruta -->
+            <div class="form-group">
+                <label for="{{ form.conductor.id_for_label }}">Conductor a designar:</label>
+                {{ form.conductor }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.tipo_origen.id_for_label }}">Origen:</label>
+                {{ form.tipo_origen }}
+                <label for="{{ form.origen.id_for_label }}"></label>
+                {{ form.origen }}
+                <label for="{{ form.numero_origen.id_for_label }}">#</label>
+                {{ form.numero_origen }}
+
+                <br>
+
+                <label for="{{ form.region.id_for_label }}">Region:</label>
+                {{ form.region }}
+                <label for="{{ form.ciudad.id_for_label }}">Ciudad:</label>
+                {{ form.ciudad }}
+                <label for="{{ form.comuna.id_for_label }}">Comuna:</label>
+                {{ form.comuna }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.tipo_destino.id_for_label }}">Destino:</label>
+                {{ form.tipo_destino }}
+                <label for="{{ form.destino.id_for_label }}"></label>
+                {{ form.destino }}
+                <label for="{{ form.numero_destino.id_for_label }}">#</label>
+                {{ form.numero_destino }}
+
+                <br>
+
+                <label for="{{ form.region_destino.id_for_label }}">Region:</label>
+                {{ form.region_destino }}
+                <label for="{{ form.ciudad_destino.id_for_label }}">Ciudad:</label>
+                {{ form.ciudad_destino }}
+                <label for="{{ form.comuna_destino.id_for_label }}">Comuna:</label>
+                {{ form.comuna_destino }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.fecha_viaje.id_for_label }}">Fecha de salida:</label>
+                {{ form.fecha_viaje }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.hora_viaje.id_for_label }}">Hora de salida:</label>
+                {{ form.hora_viaje }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.descripcion.id_for_label }}">Descripcion y notas adicionales:</label>
+                <br>
+                {{ form.descripcion }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.tipo_tarifa.id_for_label }}">Tarifa:</label>
+                <br>
+                {{ form.tipo_tarifa }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.monto_tarifa.id_for_label }}">Monto:</label>
+                <br>
+                <input type="float" id="monto_tarifa" readonly>
+            </div>
+
+            <!-- Agrega más campos según tus necesidades -->
+
+            <button type="submit">Guardar Ruta</button>
+        </form>
+    </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            // Agrega un evento change al campo tipo_tarifa para realizar la solicitud Ajax
+            $('#id_tipo_tarifa').change(function () {
+                montoTarifa();
+            });
+
+            // Función para calcular el monto basado en la tarifa seleccionada mediante Ajax
+            function montoTarifa() {
+                var tipoTarifa = $('#id_tipo_tarifa').val();
+
+                // Realiza la solicitud Ajax al servidor para obtener el monto
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url "get_monto_tarifa" %}',
+                    data: {'tipo_tarifa': tipoTarifa},
+                    success: function (data) {
+                        $('#monto_tarifa').val(data.monto);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            // Llama a la función al cargar la página para inicializar el monto
+            montoTarifa();
+        </script>
+{% endblock content %}

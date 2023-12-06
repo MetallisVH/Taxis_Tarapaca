@@ -59,17 +59,23 @@ class MediosContacto(models.Model):
 
 class TiposTarifa(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    tipo = models.IntegerField(null=True,blank=True)
+    convenio = models.IntegerField(null=True,blank=True)
     nombre = models.CharField(max_length=54,blank=True,null=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
+    
+    def __str__(self):
+        return self.nombre
 
 class Tarifa(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     tipo_tarifa = models.ForeignKey(TiposTarifa,on_delete=models.SET_NULL,blank=True,null=True,default=None)
-    monto_tarifa = models.IntegerField(null=True,blank=True)
+    monto_tarifa = models.FloatField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
+    
+    def __str__(self):
+        return str(self.tipo_tarifa.nombre)
 
 class Log(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
@@ -180,6 +186,9 @@ class Taxista(models.Model):
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     
+    def __str__(self):
+        return self.nombre + ' ' + self.apellido_p + ' ' + self.apellido_m + ' ' + '(' + str(self.id) + ')'
+    
 class Viaje(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     observacion = models.TextField(null=True, blank=True)
@@ -217,7 +226,7 @@ class Ruta(models.Model):
     motivo_anulacion = models.TextField(null=True,blank=True)
     observacion = models.CharField(max_length=254,null=True,blank=True)
     descripcion = models.TextField(null=True,blank=True)
-    tipo_tarifa = models.IntegerField(null=True,blank=True)
+    tipo_tarifa = models.ForeignKey(Tarifa,models.SET_NULL,null=True,blank=True,default=None)
     monto_tarifa = models.FloatField(null=True,blank=True)
     region = models.ForeignKey(Region,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     ciudad = models.ForeignKey(Ciudad,on_delete=models.SET_NULL,null=True,blank=True,default=None)
