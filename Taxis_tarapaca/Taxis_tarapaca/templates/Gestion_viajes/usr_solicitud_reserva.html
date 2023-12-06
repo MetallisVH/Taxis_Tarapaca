@@ -5,7 +5,7 @@
 
 {% block content %}
     <h2>Crear Reserva</h2>
-    <form method="post" action="">
+    <form method="post" action="{% url 'usr_solicitud_reserva' %}">
         {% csrf_token %}
 
         {% if error %}{{ error }}{% endif %}
