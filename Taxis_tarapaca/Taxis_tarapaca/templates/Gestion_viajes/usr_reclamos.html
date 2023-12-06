@@ -9,7 +9,7 @@
 
         {% if error %}{{ error }}{% endif %}
 
-        <form method="post" action="{% url 'usr_reclamacion' %}">
+        <form method="post" action="{% url 'usr_reclamacion' %}" autocomplete="off">
             {% csrf_token %}
             
             <div class="form-group">

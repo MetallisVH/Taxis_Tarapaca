@@ -75,3 +75,19 @@ class ReclamoForm(forms.ModelForm):
             'prefijo': forms.Select(attrs={'hidden':'true'}),
             'tipo_contacto': forms.Select(attrs={'required':'required'}),
         }
+
+class TaxistaForm(forms.ModelForm):
+    
+    genero = forms.ChoiceField(choices=[('','Seleccione un genero'),('M','Masculino'),('F','Femenino'),('otro','Otro'),('prefiero_no_contestar','Prefiero No Contestar')], widget=forms.Select(attrs={}))
+    
+    class Meta:
+        model = Taxista
+        fields = ['nombre', 'apellido_p', 'apellido_m', 'genero', 'secretaria_encargada', 'run', 'dv', 'estado']
+        
+        widgets = {
+            'nombre': forms.TextInput(attrs={'required': True}),
+            'apellido_p': forms.TextInput(attrs={'required': True}),
+            'apellido_m': forms.TextInput(attrs={'required': True}),
+            'run': forms.NumberInput(attrs={}),
+            'dv': forms.TextInput(attrs={}),
+        }

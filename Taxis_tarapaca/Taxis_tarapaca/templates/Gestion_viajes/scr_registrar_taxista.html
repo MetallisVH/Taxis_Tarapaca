@@ -1,0 +1,60 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Registrar Taxista{% endblock title %}
+
+{% block content %}
+    <div class="registro-taxista-form">
+        <h2>Registro de Taxista</h2>
+        <form method="post" action="{% url 'scr_registrar_taxista' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+                {{ form.nombre }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.apellido_p.id_for_label }}">Apellido paterno:</label>
+                {{ form.apellido_p }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.apellido_m.id_for_label }}">Apellido materno:</label>
+                {{ form.apellido_m }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.genero.id_for_label }}">Genero:</label>
+                {{ form.genero }}
+                <input type="text" id="otroGenero" name="otro_genero" style="display: none;" placeholder="Ingrese el género">
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.run.id_for_label }}">RUN:</label>
+                {{ form.run }}
+                <label for="{{ form.dv.id_for_label }}">-</label>
+                {{ form.dv }}
+            </div>
+
+            <button type="submit">Registrar Taxista</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+          $('#id_genero').change(function() {
+            var generoSeleccionado = $(this).val();
+            if (generoSeleccionado === 'otro') {
+              $('#otroGenero').show();
+            } else {
+              $('#otroGenero').hide();
+            }
+          });
+    
+        });
+      </script>
+    
+{% endblock content %}

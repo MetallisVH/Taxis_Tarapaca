@@ -208,9 +208,6 @@ def usr_busqueda_reserva(request):
                 
                 comuna_destino = ruta_vehiculo.comuna_destino
                 
-                print(region_origen)
-                print(region_destino)
-                
                 if fecha_ruta is not None:
                     try:
                         rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,fecha_viaje=fecha_ruta,deleted_at=None)
@@ -273,9 +270,6 @@ def usr_busqueda_reserva(request):
                                 context = {'form':form,'rutas':rutas_comuna}
                         except:
                             rutas_comuna = None
-                    
-                    
-                print(context)
                 
                 return render(request,'Gestion_viajes/usr_busqueda_reserva.html',context)
             
@@ -333,8 +327,6 @@ def usr_reclamacion(request):
                 if reserva == '':
                     reserva = None
                 
-                print(viaje)
-                
                 if viaje is not None:
                     
                     cod_viaje = viaje
@@ -353,14 +345,9 @@ def usr_reclamacion(request):
                         
                         return render(request,'Gestion_viajes/usr_reclamos_fail.html',context)
                     
-                print(reserva)
-                    
                 if reserva is not None:
                     
                     cod_reserva = reserva
-                    
-                    print(cod_reserva)
-                    print(type(cod_reserva))
                     
                     try:
                         
@@ -382,8 +369,6 @@ def usr_reclamacion(request):
             
             else:
                 
-                print(form.errors)
-                
                 form = ReclamoForm()
                 
                 error = "Ocurrio un error con el ingreso de la reclamacion, intente nuevamente"
@@ -399,6 +384,57 @@ def usr_reclamacion(request):
             context = {'form':form}
             
             return render(request,'Gestion_viajes/usr_reclamos.html',context)
+        
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_registrar_taxista(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        try:
+            
+            secretaria = Secretaria.objects.get(id=usuario)
+        
+        except:
+            
+            secretaria = None
+            
+        if request.method == 'POST':
+            
+            form = TaxistaForm(request.POST)
+            
+            if form.is_valid():
+                
+                nuevo_taxista = form.save(commit=False)
+                
+                genero = request.POST.get('genero',None)
+                
+                if genero is not None and genero == 'otro':
+                
+                    genero = request.POST.get('otro_genero')
+                
+                nuevo_taxista.secretaria_encargada = secretaria
+                
+                nuevo_taxista.estado = 0
+                
+                nuevo_taxista.genero = genero
+                
+                nuevo_taxista.created_at = datetime.now()
+                
+                nuevo_taxista.save()
+                
+                return render(request,'Gestion_viajes/scr_registrar_taxista_exito.html')
+        
+        else:
+            
+            form = TaxistaForm()
+            
+            context = {'form':form}
+            
+            return render(request,'Gestion_viajes/scr_registrar_taxista.html',context)
         
     else:
         
