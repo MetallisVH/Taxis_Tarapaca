@@ -16,7 +16,7 @@
             <ul>
                 {% for taxista in taxistas %}
                     <li>{{ taxista.nombre }} {{ taxista.apellido_p }} {{ taxista.apellido_m }}
-                        <button>Administrar</button>
+                        <a href = "{% url 'scr_ver_datos_taxista' id_taxista=taxista.id %}">Administrar</a>
                     </li>
                     <!-- Agrega más detalles o acciones según tus necesidades -->
                 {% endfor %}

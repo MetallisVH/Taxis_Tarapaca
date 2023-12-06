@@ -14,4 +14,6 @@ urlpatterns = [
     path("scr_rtax/",views.scr_registrar_taxista,name='scr_registrar_taxista'),
     path("scr_admtax/",views.scr_mostrar_taxistas,name='scr_mostrar_taxistas'),
     path("scr_btax/",views.scr_buscar_taxistas,name='scr_buscar_taxistas'),
+    path("scr_vtax/<int:id_taxista>/",views.scr_ver_datos_taxista,name='scr_ver_datos_taxista'),
+    path("scr_etax/<int:id_taxista>/",views.scr_editar_taxista,name="scr_editar_taxista")
 ]

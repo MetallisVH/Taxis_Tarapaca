@@ -94,3 +94,17 @@ class TaxistaForm(forms.ModelForm):
         
 class BusquedaTaxistaForm(forms.Form):
     busqueda = forms.CharField(label='Buscar Taxista', max_length=100, required=False)
+    
+class EditarTaxistaForm(forms.ModelForm):
+    
+    class Meta:
+        model = Taxista
+        fields = ['nombre', 'apellido_p', 'apellido_m', 'genero', 'secretaria_encargada', 'run', 'dv', 'estado']
+        
+        widgets = {
+            'nombre': forms.TextInput(attrs={'required': True}),
+            'apellido_p': forms.TextInput(attrs={'required': True}),
+            'apellido_m': forms.TextInput(attrs={'required': True}),
+            'run': forms.NumberInput(attrs={}),
+            'dv': forms.TextInput(attrs={}),
+        }

@@ -544,3 +544,72 @@ def scr_buscar_taxistas(request):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_ver_datos_taxista(request,id_taxista):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        try:
+            
+            taxista = Taxista.objects.get(id=id_taxista,deleted_at=None)
+            
+            context = {'taxista':taxista}
+            
+            return render(request,'Gestion_viajes/scr_ver_datos_taxista.html',context)
+            
+        except:
+            
+            taxista = None
+            
+            err = "Ocurrio un error inesperado: no se encontro al taxista."
+            
+            context = {'error':err}
+            
+            return render(request,'Gestion_viajes/scr_ver_datos_taxista.html',context)
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+
+def scr_editar_taxista(request,id_taxista):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'POST':
+            
+            taxista = Taxista.objects.get(id=id_taxista)
+        
+            form = EditarTaxistaForm(request.POST, instance=taxista)
+            
+            if form.is_valid():
+            
+                taxista_editado = form.save(commit=False)
+                
+                taxista_editado.save()
+                
+                context = {'taxista':taxista}
+                
+                return render(request,'Gestion_viajes/scr_ver_datos_taxista.html',context)
+            
+            else:
+                
+                taxista = Taxista.objects.get(id=id_taxista)
+                
+                context = {'taxista':taxista}
+                
+                print(form.errors)
+                
+                return render(request,'Gestion_viajes/scr_ver_datos_taxista.html',context)
+            
+            
+        
+        else:
+            
+            taxista = Taxista.objects.get(id=id_taxista,deleted_at=None)
+            
+            context = {'taxista':taxista}
+            
+            return render(request,'Gestion_viajes/scr_edicion_taxista.html',context)
+    

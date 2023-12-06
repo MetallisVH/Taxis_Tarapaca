@@ -1,0 +1,45 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <div class="editar-taxista">
+        <h2>Editar Información del Taxista</h2>
+
+        <form method="post" action="{% url 'scr_editar_taxista' id_taxista=taxista.id %}">
+            {% csrf_token %}
+            
+            <!-- Agrega campos de formulario para la edición -->
+            <label for="form.nombre.id_for_label">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ taxista.nombre }}" required>
+
+            <label for="apellido_p">Apellido Paterno:</label>
+            <input type="text" id="apellido_p" name="apellido_p" value="{{ taxista.apellido_p }}" required>
+
+            <label for="apellido_m">Apellido Materno:</label>
+            <input type="text" id="apellido_m" name="apellido_m" value="{{ taxista.apellido_m }}" required>
+
+            <label for="genero">Genero:</label>
+            <input type="text" id="genero" name="genero" value="{{ taxista.genero }}" required>
+
+            <label for="run">RUN:</label>
+            <input type="number" id="run" name="run" value=" {% if taxista.run is not None %} {{ taxista.run }} {% endif %}">
+            -<input type="text" id="dv" name="dv" value=" {% if taxista.dv is not None %} {{ taxista.dv }} {% endif %}">
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var runInput = document.getElementById('run');
+    
+            document.querySelector('form').addEventListener('submit', function () {
+                if (runInput.value.trim() === "") {
+                    runInput.value = null;
+                }
+            });
+        });
+    </script>
+{% endblock content %}
