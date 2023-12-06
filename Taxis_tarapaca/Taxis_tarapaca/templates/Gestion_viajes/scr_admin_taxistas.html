@@ -1,0 +1,28 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Lista de Taxistas{% endblock title %}
+
+{% block content %}
+    <div class="taxistas-lista">
+        <h2>Lista de taxistas bajo su cargo.</h2>
+
+        <form method="get" action="{% url 'scr_buscar_taxistas' %}">
+            {{ busqueda_form.as_p }}
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if taxistas %}
+            <ul>
+                {% for taxista in taxistas %}
+                    <li>{{ taxista.nombre }} {{ taxista.apellido_p }} {{ taxista.apellido_m }}
+                        <button>Administrar</button>
+                    </li>
+                    <!-- Agrega más detalles o acciones según tus necesidades -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay taxistas registrados.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

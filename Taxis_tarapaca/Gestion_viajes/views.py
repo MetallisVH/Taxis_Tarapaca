@@ -439,3 +439,108 @@ def scr_registrar_taxista(request):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_mostrar_taxistas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        form = BusquedaTaxistaForm()
+                
+        try:
+            
+            secretaria = Secretaria.objects.get(id=usuario)
+            
+        except:
+            
+            secretaria = None
+            
+        try:
+            
+            taxistas = Taxista.objects.filter(secretaria_encargada=secretaria,deleted_at=None)
+            
+        except:
+            
+            taxistas = None
+            
+        context = {'taxistas':taxistas,'busqueda_form':form}
+        
+        return render(request,'Gestion_viajes/scr_admin_taxistas.html',context)
+    
+def scr_buscar_taxistas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'GET':
+    
+            form = BusquedaTaxistaForm(request.GET)
+            taxistas = None
+
+            if form.is_valid():
+                
+                busqueda = form.cleaned_data['busqueda']
+                
+                print(busqueda)
+                # Realiza la búsqueda en base al campo que desees
+                
+                context = {'busqueda_form': form}
+                
+                try:
+                    taxistas = Taxista.objects.filter(nombre__icontains=busqueda)
+                    
+                    context = {'busqueda_form': form,'taxistas': taxistas}
+                    
+                except:
+                    taxistas = None
+                
+                if taxistas == None or not taxistas :
+                    try:
+                        taxistas = Taxista.objects.filter(run=busqueda)
+                        
+                        context = {'busqueda_form': form,'taxistas': taxistas}
+                        
+                    except:
+                        taxistas = None
+                
+                if taxistas == None or not taxistas :
+                    
+                    print(taxistas)
+                    try:
+                        
+                        taxistas = Taxista.objects.filter(id=busqueda)
+                        
+                        context = {'busqueda_form': form,'taxistas': taxistas}
+                        
+                    except:
+                        
+                        taxistas= None
+                
+                if taxistas == None:
+                    
+                    err = "No se encontro a ningun taxista con la busqueda solicitada."
+                    
+                    context = {'busqueda_form': form,'error':err}
+
+                return render(request, 'Gestion_viajes/scr_admin_taxistas.html',context)
+            
+            else:
+                
+                err = "No se encontro a ningun taxista con la busqueda solicitada."
+                    
+                context = {'busqueda_form': form,'error':err}
+                
+                return render(request, 'Gestion_viajes/scr_admin_taxistas.html',context)
+        else:
+            
+            form = BusquedaTaxistaForm()
+            
+            context = {'busqueda_form':form}
+            
+            return render(request,'Gestion_viajes/scr_admin_taxistas.html',context)
+        
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')

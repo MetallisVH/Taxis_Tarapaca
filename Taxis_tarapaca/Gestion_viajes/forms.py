@@ -91,3 +91,6 @@ class TaxistaForm(forms.ModelForm):
             'run': forms.NumberInput(attrs={}),
             'dv': forms.TextInput(attrs={}),
         }
+        
+class BusquedaTaxistaForm(forms.Form):
+    busqueda = forms.CharField(label='Buscar Taxista', max_length=100, required=False)

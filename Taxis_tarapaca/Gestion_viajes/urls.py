@@ -12,4 +12,6 @@ urlpatterns = [
     path("usr_srap/",views.usr_busqueda_reserva,name='usr_busqueda_reserva'),
     path("usr_crec/",views.usr_reclamacion,name='usr_reclamacion'),
     path("scr_rtax/",views.scr_registrar_taxista,name='scr_registrar_taxista'),
+    path("scr_admtax/",views.scr_mostrar_taxistas,name='scr_mostrar_taxistas'),
+    path("scr_btax/",views.scr_buscar_taxistas,name='scr_buscar_taxistas'),
 ]
