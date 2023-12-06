@@ -211,6 +211,7 @@ CMS_TEMPLATES = (
     ('sidebar_left.html', 'Sidebar Left'),
     ('sidebar_right.html', 'Sidebar Right'),
     ('Ufullwidth.html','Ufullwidth'),
+    ('Sfullwidth.html','Sfullwidth'),
 )
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'

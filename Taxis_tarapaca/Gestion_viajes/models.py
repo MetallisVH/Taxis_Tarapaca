@@ -9,7 +9,6 @@ class TiposReclamo(models.Model):
     def __str__(self):
         return self.nombre
 
-
 class Pais(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     nombre = models.CharField(max_length=54,null=True,blank=True)
@@ -107,28 +106,6 @@ class Geolocalizacion(models.Model):
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
 
-class Viaje(models.Model):
-    id = models.AutoField(primary_key=True, unique=True)
-    observacion = models.TextField(null=True, blank=True)
-    anulado = models.BooleanField(null=True, blank=True)
-    motivo_anulado = models.CharField(max_length=254, blank=True, null=True)
-    hora_inicio = models.DateTimeField(null=True, blank=True)
-    hora_termino = models.DateTimeField(blank=True, null=True)
-    tipo_viaje = models.CharField(max_length=54)
-    cantidad_pasajeros = models.IntegerField(null=True, blank=True)
-    cod_viaje = models.CharField(max_length=24, unique=True)
-    fecha = models.DateField(null=True, blank=True)
-    latitud_origen = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitud_origen = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    latitud_destino = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitud_destino = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    origen = models.CharField(max_length=254, blank=True, null=True)
-    tipo_origen = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='viaje_torigen')
-    destino = models.CharField(max_length=254, blank=True, null=True)
-    tipo_destino = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='viaje_tdestino')
-    deleted_at = models.DateTimeField(null=True,blank=True)
-    created_at = models.DateTimeField(null=True,blank=True)
-
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     nombre = models.CharField(max_length=54,null=True,blank=True)
@@ -140,12 +117,19 @@ class Usuario(models.Model):
     nombre_usu = models.CharField(max_length=54,null=True,blank=True,unique=True)
     fecha_nacimiento = models.DateField(null=True,blank=True)
     edad = models.IntegerField(null=True,blank=True)
+    tipo = models.IntegerField(null=True,blank=True)
     email = models.EmailField(max_length=254,null=True,blank=True,unique=True)
     prefijo = models.ForeignKey(PrefijosPais,on_delete=models.SET_NULL,null=True,blank=True)
     telefono = models.IntegerField(null=True,blank=True)
     password = models.TextField(null=True,blank=True)
     tipo_calle = models.ForeignKey(TiposCalle,on_delete=models.SET_NULL,blank=True,null=True,default=None)
     direccion = models.CharField(max_length=254,null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class Secretaria(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     
@@ -182,9 +166,45 @@ class Reserva(models.Model):
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     
+class Taxista(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    nombre = models.CharField(max_length=54,null=True,blank=True)
+    apellido_p = models.CharField(max_length=54,null=True,blank=True)
+    apellido_m = models.CharField(max_length=54,null=True,blank=True)
+    genero = models.CharField(max_length=54,null=True,blank=True)
+    secretaria_encargada = models.ForeignKey(Secretaria,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    # añadir foreign key de vehiculos
+    run = models.IntegerField(null=True,blank=True)
+    dv = models.CharField(max_length=1,null=True,blank=True)
+    estado = models.IntegerField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class Viaje(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    observacion = models.TextField(null=True, blank=True)
+    anulado = models.BooleanField(null=True, blank=True)
+    motivo_anulado = models.CharField(max_length=254, blank=True, null=True)
+    hora_inicio = models.DateTimeField(null=True, blank=True)
+    hora_termino = models.DateTimeField(blank=True, null=True)
+    tipo_viaje = models.CharField(max_length=54)
+    cantidad_pasajeros = models.IntegerField(null=True, blank=True)
+    cod_viaje = models.CharField(max_length=24, unique=True)
+    fecha = models.DateField(null=True, blank=True)
+    latitud_origen = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitud_origen = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitud_destino = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitud_destino = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    origen = models.CharField(max_length=254, blank=True, null=True)
+    tipo_origen = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='viaje_torigen')
+    destino = models.CharField(max_length=254, blank=True, null=True)
+    tipo_destino = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='viaje_tdestino')
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
 class Ruta(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    #agregar columna conductor
+    conductor = models.ForeignKey(Taxista,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     origen = models.CharField(max_length=254,null=True,blank=True)
     numero_origen = models.IntegerField(null=True,blank=True)
     tipo_origen = models.ForeignKey(TiposCalle,on_delete = models.SET_NULL,blank=True,null=True,default=None,related_name='ruta_torigen')
@@ -221,5 +241,14 @@ class Reclamo(models.Model):
     viaje = models.ForeignKey(Viaje,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     reserva = models.ForeignKey(Reserva,on_delete=models.SET_NULL,null=True,blank=True,default=None)
     motivo_anulacion = models.TextField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class GaleriaDocumentosTaxista(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    dueño = models.ForeignKey(Taxista,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    imagen = models.ImageField(null=True,blank=True,upload_to='documentos/')
+    estado = models.IntegerField(null=True,blank=True)
+    vencimiento = models.DateTimeField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)

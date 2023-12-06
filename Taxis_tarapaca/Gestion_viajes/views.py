@@ -89,6 +89,8 @@ def home_registrar_usuario(request):
             
             nuevo_usu.password = make_password(nuevo_usu.password)
             
+            nuevo_usu.tipo = 0
+            
             nuevo_usu.save()
             
             return render(request,'Gestion_viajes/home_registro_usuario_exito.html')

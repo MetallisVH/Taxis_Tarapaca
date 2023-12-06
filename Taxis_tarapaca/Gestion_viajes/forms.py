@@ -8,7 +8,7 @@ class UsuarioForm(forms.ModelForm):
     
     class Meta:
         model = Usuario
-        fields = ['nombre', 'run', 'dv', 'apellido_p', 'apellido_m', 'nombre_usu', 'fecha_nacimiento', 'edad', 'email', 'prefijo', 'telefono', 'password', 'tipo_calle', 'direccion','genero']
+        fields = ['nombre', 'run', 'dv', 'apellido_p', 'apellido_m', 'nombre_usu', 'fecha_nacimiento', 'edad', 'email', 'prefijo', 'telefono', 'password', 'tipo_calle', 'direccion','genero','tipo']
         widgets = {
             'fecha_nacimiento': forms.DateInput(attrs={'type': 'date','max': str(date.today()),'required': 'required'}),
             'password': forms.PasswordInput(attrs={'required': 'required'}),
