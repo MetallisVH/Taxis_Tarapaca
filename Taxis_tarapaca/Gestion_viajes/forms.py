@@ -118,3 +118,6 @@ class IngresarRutaForm(forms.ModelForm):
             'fecha_viaje': forms.DateInput(attrs={'type': 'date'}),
             'hora_viaje': forms.TimeInput(attrs={'type': 'time'}),
         }
+        
+class BusquedaRutaForm(forms.Form):
+    busqueda = forms.CharField(label='Buscar Ruta', max_length=100, required=False)

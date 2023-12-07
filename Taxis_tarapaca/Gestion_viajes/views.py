@@ -26,6 +26,74 @@ def get_monto_tarifa(request):
     
     return JsonResponse({'monto': monto})
 
+def scr_buscar_rutas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'GET':
+            
+            form = BusquedaRutaForm(request.GET)
+            
+            rutas = Ruta.objects.filter(deleted_at=None)
+            
+            context = {'form':form,'rutas':rutas}
+            
+            if form.is_valid():
+                
+                busqueda = form.cleaned_data['busqueda']
+                
+                try:
+                    
+                    print(busqueda)
+                    
+                    rutas = Ruta.objects.filter(id=busqueda,deleted_at=None)
+                    
+                    context = {'form':form,'rutas':rutas}
+                    
+                except:
+                    
+                    rutas = None
+                
+                if rutas is None:
+                    
+                    try:
+                        
+                        conductores = Taxista.objects.filter(nombre__icontains=busqueda)
+                        
+                        for conductor in conductores:
+                            
+                            if conductor.nombre == busqueda or conductor.apellido_m == busqueda or conductor.apellido_p == busqueda:
+                                
+                                rutas = Ruta.objects.filter(nombre=busqueda,deleted_at=None)
+                    
+                    except:
+                        
+                        rutas = None
+                
+                return render(request,'Gestion_viajes/scr_admin_rutas.html',context)
+            
+            else:
+                
+                form = BusquedaRutaForm()
+                
+                context = {'form':form}
+                
+                return render(request,'Gestion_viajes/scr_admin_rutas.html')
+        
+        else:
+            
+            form = BusquedaRutaForm()
+                
+            context = {'form':form}
+                
+            return render(request,'Gestion_viajes/scr_admin_rutas.html')
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+
 def check_ciudades(request):
     
     region_seleccionada = request.GET.get('region',None)
@@ -501,9 +569,6 @@ def scr_buscar_taxistas(request):
                 
                 busqueda = form.cleaned_data['busqueda']
                 
-                print(busqueda)
-                # Realiza la búsqueda en base al campo que desees
-                
                 context = {'busqueda_form': form}
                 
                 try:
@@ -659,6 +724,38 @@ def scr_ingresar_ruta(request):
             
             return render(request,'Gestion_viajes/scr_registrar_ruta.html',context)
         
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_admin_rutas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        form = BusquedaRutaForm()
+        
+        context = {'form':form}
+        
+        try:
+            
+            rutas = Ruta.objects.filter(deleted_at=None)
+            
+        except:
+            
+            rutas = None
+        
+        if rutas is not None:
+            
+            context = {'form':form,'rutas':rutas}
+            
+        else:
+            
+            context = None
+            
+        return render(request,'Gestion_viajes/scr_admin_rutas.html',context)
+    
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')

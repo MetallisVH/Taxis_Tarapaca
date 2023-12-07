@@ -18,4 +18,6 @@ urlpatterns = [
     path("scr_vtax/<int:id_taxista>/",views.scr_ver_datos_taxista,name='scr_ver_datos_taxista'),
     path("scr_etax/<int:id_taxista>/",views.scr_editar_taxista,name="scr_editar_taxista"),
     path("scr_irut/",views.scr_ingresar_ruta,name='scr_ingresar_ruta'),
+    path("scr_arut/",views.scr_admin_rutas,name='scr_admin_rutas'),
+    path("scr_brut/",views.scr_buscar_rutas,name='scr_buscar_rutas'),
 ]
