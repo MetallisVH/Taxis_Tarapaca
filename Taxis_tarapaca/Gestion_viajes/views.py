@@ -728,7 +728,7 @@ def scr_ingresar_ruta(request):
         
         return render(request,'Gestion_viajes/err_frb.html')
     
-def scr_admin_rutas(request):
+def scr_mostrar_rutas(request):
     
     usuario = request.session.get('user',None)
     
@@ -755,6 +755,84 @@ def scr_admin_rutas(request):
             context = None
             
         return render(request,'Gestion_viajes/scr_admin_rutas.html',context)
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_ver_datos_ruta(request,id_ruta):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        try:
+        
+            ruta = Ruta.objects.get(id=id_ruta)
+            
+            context = {'ruta':ruta}
+            
+            return render(request,'Gestion_viajes/scr_ver_datos_ruta.html',context)
+        
+        except:
+            
+            ruta = None
+            
+            err = "No se encontro la ruta especificada."
+            
+            context = {'error':err}
+            
+            return render(request,'Gestion_viajes/ver_datos_ruta.html',context)
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_editar_ruta(request,id_ruta):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'POST':
+            
+            ruta = Ruta.objects.get(id=id_ruta)
+            
+            form = EditarRutaForm(request.POST, instance=ruta)
+            
+            context = {'ruta':ruta,'form':form}
+            
+            if form.is_valid():
+                
+                ruta_editada = form.save(commit=False)
+                
+                ruta_editada.save()
+                
+                context = {'ruta':ruta,'form':form}
+                
+                return render(request,'Gestion_viajes/scr_ver_datos_ruta.html',context)
+            
+            else:
+                
+                ruta = Ruta.objects.get(id=id_ruta)
+                
+                form = EditarRutaForm(instance=ruta)
+                
+                context = {'ruta':ruta,'form':form}
+                
+                return render(request,'Gestion_viajes/scr_edicion_ruta.html',context)
+        
+        else:
+            
+            ruta = Ruta.objects.get(id=id_ruta)
+            
+            form = EditarRutaForm(instance=ruta)
+            
+            context = {'ruta':ruta,'form':form}
+            
+            print(context)
+            
+            return render(request,'Gestion_viajes/scr_edicion_ruta.html',context)
     
     else:
         

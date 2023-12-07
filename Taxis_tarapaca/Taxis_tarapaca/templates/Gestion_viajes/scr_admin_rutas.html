@@ -16,7 +16,7 @@
             <ul>
                 {% for ruta in rutas %}
                     <li>{{ ruta.id }} {{ ruta.conductor }} {{ ruta.tipo_tarifa.monto_tarifa }}
-                        <a href = "">Administrar</a>
+                        <a href = "{% url 'scr_ver_datos_ruta' id_ruta=ruta.id %}">Administrar</a>
                     </li>
                     <!-- Agrega más detalles o acciones según tus necesidades -->
                 {% endfor %}

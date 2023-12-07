@@ -121,3 +121,18 @@ class IngresarRutaForm(forms.ModelForm):
         
 class BusquedaRutaForm(forms.Form):
     busqueda = forms.CharField(label='Buscar Ruta', max_length=100, required=False)
+    
+class EditarRutaForm(forms.ModelForm):
+    class Meta:
+        model = Ruta
+        fields = ['monto_tarifa','region','ciudad','comuna','region_destino','ciudad_destino','comuna_destino','fecha_viaje']
+
+        widgets = {
+            'region': forms.Select(attrs={'required':'required'}),
+            'ciudad': forms.Select(attrs={'hidden':'true'}),
+            'comuna': forms.Select(attrs={'hidden':'true'}),
+            'region_destino': forms.Select(attrs={'required':'required'}),
+            'ciudad_destino': forms.Select(attrs={'hidden':'true'}),
+            'comuna_destino': forms.Select(attrs={'hidden':'true'}),
+            'fecha_viaje': forms.DateInput(attrs={'type': 'date','min': str(date.today())}),
+        }

@@ -1,0 +1,23 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Administrar Taxista{% endblock title %}
+
+{% block content %}
+    <div class="admin-taxista">
+        <h2>Detalles y opciones de administración</h2>
+
+        <p>Codigo de ruta: {{ ruta.id }}</p>
+        <p>conductor: {{ ruta.conductor }}</p>
+        <p>Tipo de tarifa: {{ ruta.tipo_tarifa }}</p>
+        <p>Fecha de partida: {{ ruta.fecha_viaje }}</p>
+        <!-- Agrega más detalles según tus necesidades -->
+
+        <h3>Acciones:</h3>
+        <ul>
+            <li><a href="{% url 'scr_editar_ruta' id_ruta=ruta.id %}">Editar</a></li>
+            
+            <!-- Agrega más acciones según tus necesidades -->
+        </ul>
+    </div>
+{% endblock content %}
