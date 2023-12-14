@@ -211,11 +211,11 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.logeado === 1) {
-                            console.log('Usuario legitimo. Aqui poner despues la condicion para redireccionar a la apgina de usuarios logeados.');
+                            console.log('Usuario legitimo. Aqui poner despues la condicion para redireccionar a la pagina de usuarios logeados.');
                         } else if (data.logeado === 2) {
-                            window.location.href = "http://localhost:8000/es/";   
+                            console.log('Usuario legitimo. Aqui poner despues la condicion para redireccionar a la pagina de secretarias logeados.'); 
                         } else if (data.logeado === 0){
-                            window.location.href = "http://localhost:8000/es/"
+                            console.log('Aqui no hacer nada');
                         }
                     },
                     error: function (error) {
