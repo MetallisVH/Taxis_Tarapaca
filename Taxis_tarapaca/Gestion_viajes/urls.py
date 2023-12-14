@@ -22,4 +22,5 @@ urlpatterns = [
     path("scr_brut/",views.scr_buscar_rutas,name='scr_buscar_rutas'),
     path("scr_vrut/<int:id_ruta>/",views.scr_ver_datos_ruta,name='scr_ver_datos_ruta'),
     path("scr_erut/<int:id_ruta>/",views.scr_editar_ruta,name='scr_editar_ruta'),
+    path("scr_itar/",views.scr_ingresar_tarifa,name='scr_ingresar_tarifa'),
 ]

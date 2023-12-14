@@ -136,3 +136,8 @@ class EditarRutaForm(forms.ModelForm):
             'comuna_destino': forms.Select(attrs={'hidden':'true'}),
             'fecha_viaje': forms.DateInput(attrs={'type': 'date','min': str(date.today())}),
         }
+        
+class TarifaForm(forms.ModelForm):
+    class Meta:
+        model = Tarifa
+        fields = ['tipo_tarifa', 'monto_tarifa','nombre']

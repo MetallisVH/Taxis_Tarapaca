@@ -1,5 +1,12 @@
 from django.db import models
 
+class Convenio(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    monto = models.FloatField(null=True,blank=True)
+    #añadir fk de la empresa asociada
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+
 class TiposReclamo(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     nombre = models.CharField(max_length=54,null=True,blank=True)
@@ -59,7 +66,6 @@ class MediosContacto(models.Model):
 
 class TiposTarifa(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    convenio = models.IntegerField(null=True,blank=True)
     nombre = models.CharField(max_length=54,blank=True,null=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
@@ -69,13 +75,15 @@ class TiposTarifa(models.Model):
 
 class Tarifa(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
+    nombre = models.CharField(max_length=54,blank=True,null=True)
     tipo_tarifa = models.ForeignKey(TiposTarifa,on_delete=models.SET_NULL,blank=True,null=True,default=None)
+    convenio = models.ForeignKey(Convenio,on_delete=models.SET_NULL,blank=True,null=True,default=None)
     monto_tarifa = models.FloatField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     
     def __str__(self):
-        return str(self.tipo_tarifa.nombre)
+        return str(self.nombre)
 
 class Log(models.Model):
     id = models.AutoField(primary_key=True,unique=True)

@@ -870,3 +870,22 @@ def scr_editar_ruta(request,id_ruta):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_ingresar_tarifa(request):
+    
+    usuario = request.session.get('user', None)
+    
+    if usuario is not None:
+        if request.method == 'POST':
+            form = TarifaForm(request.POST)
+            if form.is_valid():
+                form.save()
+                # Puedes hacer más cosas después de guardar, redireccionar, etc.
+                return render(request,'Gestion_viajes/scr_registrar_tarifa_exito.html')
+        else:
+            form = TarifaForm()
+
+        return render(request, 'Gestion_viajes/scr_registrar_tarifa.html', {'form': form})
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')

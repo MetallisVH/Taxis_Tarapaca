@@ -1,0 +1,28 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <h2>Ingresar Tarifa</h2>
+    <form method="post" action="{% url 'scr_ingresar_tarifa' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.nombre.id_for_label }}">Nombre de la tarifa:</label>
+            {{ form.nombre }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.tipo_tarifa.id_for_label }}">Tipo de tarifa:</label>
+            {{ form.tipo_tarifa }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.monto_tarifa.id_for_label }}">Monto de la tarifa:</label>
+            {{ form.monto_tarifa }}
+        </div>
+
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock content %}
