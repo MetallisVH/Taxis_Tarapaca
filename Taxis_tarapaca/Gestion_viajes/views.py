@@ -889,3 +889,157 @@ def scr_ingresar_tarifa(request):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+
+def scr_buscar_tarifas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == "GET":
+            
+            form = BusquedaTarifaForm(request.GET)
+            
+            tarifas = Tarifa.objects.filter(deleted_at=None)
+            
+            context = {'form':form,'tarifas':tarifas}
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    busqueda = form.cleaned_data['busqueda'].lower()
+                    
+                except:
+                    
+                    busqueda = form.cleaned_data['busqueda'].lower()
+                
+                try:
+                    
+                    tarifas = Tarifa.objects.filter(id=busqueda)
+                    
+                    context = {'form':form,'tarifas':tarifas}
+                    
+                except:
+                    
+                    tarifas = None
+                
+                if tarifas is None:
+                    
+                    try:
+                        
+                        tarifas = Tarifa.objects.filter(nombre__icontains=busqueda)
+                        
+                        context = {'form':form,'tarifas':tarifas}
+                    
+                    except:
+                        
+                        tarifas = None
+                
+                if tarifas is None:
+                    
+                    tarifas = Tarifa.objects.filter(deleted_at=None)
+                    
+                    err = "No se encontraron tarifas con la busqueda especificada."
+            
+                    context = {'form':form,'tarifas':tarifas,'error':err}
+                    
+                
+                return render(request,'Gestion_viajes/scr_admin_tarifas.html',context)
+            
+            else:
+                
+                form = BusquedaTarifaForm()
+                
+                tarifas = Tarifa.objects.filter(deleted_at=None)
+                
+                context = {'form':form,'tarifas':tarifas}
+                
+                return render(request,'Gestion_viajes/scr_admin_tarifas.html',context)
+        
+        else:
+                
+                form = BusquedaTarifaForm()
+                
+                tarifas = Tarifa.objects.filter(deleted_at=None)
+                
+                context = {'form':form,'tarifas':tarifas}
+                
+                return render(request,'Gestion_viajes/scr_admin_tarifas.html',context)
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_ver_datos_tarifa(request,id_tarifa):
+    
+    usuario = request.session.get('user', None)
+    
+    if usuario is not None:
+        
+        try:
+            
+            tarifa = Tarifa.objects.get(id=id_tarifa)
+            
+            context = {'tarifa':tarifa}
+            
+            return render(request,'Gestion_viajes/scr_ver_datos_tarifa.html',context)
+            
+        except:
+            
+            tarifa = None
+            
+            err = "Tarifa no encontrada."
+            
+            context = {'error':err}
+            
+            return render(request,'Gestion_viajes/scr_ver_datos_tarifa.html',context)
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+
+def scr_editar_tarifa(request, id_tarifa):
+    
+    usuario = request.session.get('user',None)
+    
+    tarifa = Tarifa.objects.get(id=id_tarifa)
+    
+    if usuario is not None:
+
+        if request.method == 'POST':
+            
+            form = TarifaForm(request.POST, instance=tarifa)
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    form.save()
+                    
+                    form = BusquedaTarifaForm()
+                    
+                    tarifas = Tarifa.objects.filter(deleted_at=None)
+                    
+                    context = {'form':form,'tarifas':tarifas}
+                
+                except Exception as e:
+                    
+                    err = "Error al guardar la tarifa."
+                    
+                    form = BusquedaTarifaForm()
+                    
+                    tarifas = Tarifa.objects.filter(deleted_at=None)
+                    
+                    context = {'form':form,'tarifas':tarifas,'error':err}
+                
+                return render(request,'Gestion_viajes/scr_admin_tarifas.html',context)
+                
+        else:
+            
+            form = TarifaForm(instance=tarifa)
+
+        return render(request, 'Gestion_viajes/scr_edicion_tarifa.html', {'form': form, 'tarifa': tarifa})
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')

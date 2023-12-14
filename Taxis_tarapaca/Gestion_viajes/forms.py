@@ -141,3 +141,6 @@ class TarifaForm(forms.ModelForm):
     class Meta:
         model = Tarifa
         fields = ['tipo_tarifa', 'monto_tarifa','nombre']
+        
+class BusquedaTarifaForm(forms.Form):
+    busqueda = forms.CharField(label='Buscar Tarifa', max_length=100, required=False)

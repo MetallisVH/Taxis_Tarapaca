@@ -23,4 +23,7 @@ urlpatterns = [
     path("scr_vrut/<int:id_ruta>/",views.scr_ver_datos_ruta,name='scr_ver_datos_ruta'),
     path("scr_erut/<int:id_ruta>/",views.scr_editar_ruta,name='scr_editar_ruta'),
     path("scr_itar/",views.scr_ingresar_tarifa,name='scr_ingresar_tarifa'),
+    path("scr_btar/",views.scr_buscar_tarifas,name='scr_buscar_tarifas'),
+    path("scr_vtar/<int:id_tarifa>/",views.scr_ver_datos_tarifa,name='scr_ver_datos_tarifa'),
+    path("scr_etar/<int:id_tarifa>/",views.scr_editar_tarifa,name='scr_editar_tarifa'),
 ]

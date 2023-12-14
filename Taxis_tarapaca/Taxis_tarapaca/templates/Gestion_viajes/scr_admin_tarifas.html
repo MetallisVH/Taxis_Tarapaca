@@ -1,0 +1,30 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Lista de tarifas{% endblock title %}
+
+{% block content %}
+    <div class="taxistas-lista">
+        <h2>Lista de tarifas ingresadas.</h2>
+
+        <form method="get" action="{% url 'scr_buscar_tarifas' %}">
+            {{ form.busqueda }}
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if error %} {{ error }} {% endif %}
+
+        {% if tarifas %}
+            <ul>
+                {% for tarifa in tarifas %}
+                    <li>{{ tarifa.id }} {{ tarifa.nombre }} {{ tarifa.monto_tarifa }}
+                        <a href = "{% url 'scr_ver_datos_tarifa' id_tarifa=tarifa.id %}">Administrar</a>
+                    </li>
+                    <!-- Agrega más detalles o acciones según tus necesidades -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay tarifas registradas.</p>
+        {% endif %}
+    </div>
+{% endblock content %}
