@@ -1016,21 +1016,23 @@ def scr_editar_tarifa(request, id_tarifa):
                     
                     form.save()
                     
+                    msj = "Tarifa: " + tarifa.nombre + " modificada con exito."
+                    
                     form = BusquedaTarifaForm()
                     
                     tarifas = Tarifa.objects.filter(deleted_at=None)
                     
-                    context = {'form':form,'tarifas':tarifas}
+                    context = {'form':form,'tarifas':tarifas,'msj':msj}
                 
                 except Exception as e:
                     
-                    err = "Error al guardar la tarifa."
+                    msj = "Error al guardar la tarifa."
                     
                     form = BusquedaTarifaForm()
                     
                     tarifas = Tarifa.objects.filter(deleted_at=None)
                     
-                    context = {'form':form,'tarifas':tarifas,'error':err}
+                    context = {'form':form,'tarifas':tarifas,'msj':msj}
                 
                 return render(request,'Gestion_viajes/scr_admin_tarifas.html',context)
                 
