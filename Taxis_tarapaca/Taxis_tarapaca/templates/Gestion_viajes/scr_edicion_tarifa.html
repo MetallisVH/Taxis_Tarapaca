@@ -11,6 +11,7 @@
         {{ form.as_p }}
         <button type="submit">Guardar Cambios</button>
     </form>
+
+    <a href="{% url 'scr_buscar_tarifas' %}">Salir a la lista de tarifas sin guardar</a>
     
-    <a href="{% url 'scr_buscar_tarifas' %}">Volver a la lista de tarifas</a>
 {% endblock content %}
