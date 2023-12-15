@@ -1,0 +1,27 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %} - Editar Tarifa{% endblock title %}
+
+{% block content %}
+    <h2>Editar Tarifa</h2>
+
+    <form method="post" action="{% url 'scr_editar_vehiculo' id_vehiculo=vehiculo.id %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.conductor.id_for_label }}">Conductor designado:</label>
+            {{ form.conductor }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.patente.id_for_label }}">Patente del vehiculo:</label>
+            {{ form.patente }}
+        </div>
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <a href="{% url 'scr_buscar_vehiculos' %}">Salir a la lista de tarifas sin guardar</a>
+    
+{% endblock content %}

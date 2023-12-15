@@ -1,0 +1,30 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Lista de vehiculos{% endblock title %}
+
+{% block content %}
+    <div class="taxistas-lista">
+        <h2>Lista de vehiculos ingresados.</h2>
+
+        <form method="get" action="{% url 'scr_buscar_vehiculos' %}">
+            {{ form.busqueda }}
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if msj %} {{ msj }} {% endif %}
+
+        {% if vehiculos %}
+            <ul>
+                {% for vehiculo in vehiculos %}
+                    <li>{{ vehiculo.id }} {{ vehiculo.conductor }} {{ vehiculo.patente }}
+                        <a href = "{% url 'scr_ver_datos_vehiculo' id_vehiculo=vehiculo.id %}">Administrar</a>
+                    </li>
+                    <!-- Agrega más detalles o acciones según tus necesidades -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay vehiculos registrados.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

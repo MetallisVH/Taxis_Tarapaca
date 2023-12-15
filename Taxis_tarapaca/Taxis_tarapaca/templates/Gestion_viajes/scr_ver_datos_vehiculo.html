@@ -1,0 +1,23 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}Administrar tarifa{% endblock title %}
+
+{% block content %}
+    <div class="admin-taxista">
+        <h2>Detalles y opciones de administración</h2>
+
+        <p>Codigo de tarifa: {{ vehiculo.id }}</p>
+        <p>monto de la tarifa: {{ vehiculo.conductor }}</p>
+        <p>Tipo de tarifa: {{ vehiculo.patente }}</p>
+        <!-- Agrega más detalles según tus necesidades -->
+
+        <h3>Acciones:</h3>
+        <ul>
+            <li><a href="{% url 'scr_editar_vehiculo' id_vehiculo=vehiculo.id %}">Editar</a></li>
+            <li><a href="{% url 'scr_buscar_vehiculos' %}">Volver a la lista de tarifas</a></li>
+            
+            <!-- Agrega más acciones según tus necesidades -->
+        </ul>
+    </div>
+{% endblock content %}

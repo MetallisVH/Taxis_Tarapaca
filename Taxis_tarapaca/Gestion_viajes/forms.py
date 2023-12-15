@@ -149,3 +149,6 @@ class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = ['conductor', 'patente', 'estado']
+
+class BusquedaVehiculoForm(forms.Form):
+    busqueda = forms.CharField(label='Buscar Tarifa', max_length=100, required=False)

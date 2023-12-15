@@ -912,7 +912,7 @@ def scr_buscar_tarifas(request):
                     
                 except:
                     
-                    busqueda = form.cleaned_data['busqueda'].lower()
+                    busqueda = form.cleaned_data['busqueda']
                 
                 try:
                     
@@ -1061,6 +1061,162 @@ def scr_ingresar_vehiculo(request):
 
         return render(request, 'Gestion_viajes/scr_registrar_vehiculo.html', {'form': form})
 
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_buscar_vehiculos(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == "GET":
+            
+            form = BusquedaVehiculoForm(request.GET)
+            
+            vehiculos = None
+            
+            context = {'form':form}
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    busqueda = form.cleaned_data['busqueda'].lower()
+                    
+                except:
+                    
+                    busqueda = form.cleaned_data['busqueda']
+                    
+                try:
+                    
+                    vehiculos = Vehiculo.objects.filter(id=busqueda)
+                    
+                    context = {'form':form,'vehiculos':vehiculos}
+                    
+                except:
+                    
+                    vehiculos = None
+                
+                if vehiculos is None:
+                    
+                    try:
+                        
+                        vehiculos = Vehiculo.objects.filter(conductor__nombre__icontains=busqueda)
+                        
+                        context = {'form':form,'vehiculos':vehiculos}
+                        
+                    except:
+                        
+                        vehiculos = None
+                    
+                if vehiculos is None:
+                    
+                    try:
+                        
+                        busqueda = busqueda.upper()
+                        
+                        vehiculos = Vehiculo.objects.filter(patente__icontains=busqueda)
+                        
+                        context = {'form':form,'vehiculos':vehiculos}
+                    
+                    except:
+                        
+                        vehiculos = None
+                    
+                if vehiculos is None:
+                    
+                    try:
+                        
+                        vehiculos = Vehiculo.objects.filter(deleted_at=None)
+                        
+                        context = {'form':form,'vehiculos':vehiculos}
+                    
+                    except:
+                        
+                        vehiculos = None
+                
+                return render(request,'Gestion_viajes/scr_admin_vehiculos.html',context)
+            
+            else:
+                form = VehiculoForm()
+
+                return render(request, 'registrar_vehiculo.html', {'form': form})
+        
+        else:
+            form = VehiculoForm()
+
+            return render(request, 'registrar_vehiculo.html', {'form': form})
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.hmtl')
+    
+def scr_ver_datos_vehiculo(request,id_vehiculo):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        vehiculo = Vehiculo.objects.get(id=id_vehiculo)
+        
+        context = {'vehiculo':vehiculo}
+        
+        return render(request,'Gestion_viajes/scr_ver_datos_vehiculo.html',context)
+            
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_editar_vehiculo(request,id_vehiculo):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        vehiculo = Vehiculo.objects.get(id=id_vehiculo)
+        
+        if request.method == "POST":
+            
+            form = VehiculoForm(request.POST,instance=vehiculo)
+            
+            context = {'form':form,'vehiculo':vehiculo}
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    form.save()
+                    
+                    context = {'form':form,'vehiculo':vehiculo}
+                    
+                    return render(request,'Gestion_viajes/scr_ver_datos_vehiculo.html',context)
+                    
+                except:
+                    
+                    msj = "Error al guardar los cambios."
+                    
+                    context = {'form':form,'vehiculo':vehiculo,'msj':msj}
+                
+                    return render(request,'Gestion_viajes/scr_ver_datos_vehiculo.html',context)
+            
+            else:
+                
+                form = VehiculoForm(instance=vehiculo)
+            
+                context = {'form':form,'vehiculo':vehiculo}
+                
+                return render(request,'Gestion_viajes/scr_edicion_vehiculo.html',context)
+            
+        else:
+            
+            form = VehiculoForm(instance=vehiculo)
+            
+            context = {'form':form,'vehiculo':vehiculo}
+            
+            return render(request,'Gestion_viajes/scr_edicion_vehiculo.html',context)
+        
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
