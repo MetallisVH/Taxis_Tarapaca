@@ -1039,3 +1039,28 @@ def scr_editar_tarifa(request, id_tarifa):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_ingresar_vehiculo(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'POST':
+            
+            form = VehiculoForm(request.POST)
+            
+            if form.is_valid():
+                
+                form.save()
+                
+                return render(request,'Gestion_viajes/scr_registrar_vehiculo_exito.html')
+        else:
+            
+            form = VehiculoForm()
+
+        return render(request, 'Gestion_viajes/scr_registrar_vehiculo.html', {'form': form})
+
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')

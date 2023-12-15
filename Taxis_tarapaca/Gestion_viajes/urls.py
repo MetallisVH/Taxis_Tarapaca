@@ -26,4 +26,5 @@ urlpatterns = [
     path("scr_btar/",views.scr_buscar_tarifas,name='scr_buscar_tarifas'),
     path("scr_vtar/<int:id_tarifa>/",views.scr_ver_datos_tarifa,name='scr_ver_datos_tarifa'),
     path("scr_etar/<int:id_tarifa>/",views.scr_editar_tarifa,name='scr_editar_tarifa'),
+    path("scr_iveh/",views.scr_ingresar_vehiculo,name='scr_ingresar_vehiculo'),
 ]

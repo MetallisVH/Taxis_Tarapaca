@@ -187,7 +187,6 @@ class Taxista(models.Model):
     apellido_m = models.CharField(max_length=54,null=True,blank=True)
     genero = models.CharField(max_length=54,null=True,blank=True)
     secretaria_encargada = models.ForeignKey(Secretaria,on_delete=models.SET_NULL,null=True,blank=True,default=None)
-    # añadir foreign key de vehiculos
     run = models.IntegerField(null=True,blank=True)
     dv = models.CharField(max_length=1,null=True,blank=True)
     estado = models.IntegerField(null=True,blank=True)
@@ -264,7 +263,24 @@ class Reclamo(models.Model):
 class GaleriaDocumentosTaxista(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
     dueño = models.ForeignKey(Taxista,on_delete=models.SET_NULL,null=True,blank=True,default=None)
-    imagen = models.ImageField(null=True,blank=True,upload_to='documentos/')
+    imagen = models.ImageField(null=True,blank=True,upload_to='documentos_taxista/')
+    estado = models.IntegerField(null=True,blank=True)
+    vencimiento = models.DateTimeField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class Vehiculo(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    conductor = models.ForeignKey(Taxista,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    patente = models.CharField(max_length=6,null=True,blank=True)
+    estado = models.IntegerField(null=True,blank=True)
+    deleted_at = models.DateTimeField(null=True,blank=True)
+    created_at = models.DateTimeField(null=True,blank=True)
+    
+class GaleriaDocumentosVehiculo(models.Model):
+    id = models.AutoField(primary_key=True,unique=True)
+    dueño = models.ForeignKey(Taxista,on_delete=models.SET_NULL,null=True,blank=True,default=None)
+    imagen = models.ImageField(null=True,blank=True,upload_to='documentos_vehiculo/')
     estado = models.IntegerField(null=True,blank=True)
     vencimiento = models.DateTimeField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)

@@ -1,0 +1,24 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %} - Registrar Vehículo{% endblock title %}
+
+{% block content %}
+    <h2>Registrar Vehículo</h2>
+
+    <form method="post" action="{% url 'scr_ingresar_vehiculo' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.conductor.id_for_label }}">Conductor designado:</label>
+            {{ form.conductor }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.patente.id_for_label }}">Patente del vehiculo:</label>
+            {{ form.patente }}
+        </div>
+
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock content %}
