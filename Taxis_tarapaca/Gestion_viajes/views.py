@@ -1220,3 +1220,9 @@ def scr_editar_vehiculo(request,id_vehiculo):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def logout(request):
+    
+    request.session.flush()
+    
+    return redirect('http://localhost:8000/es/')
