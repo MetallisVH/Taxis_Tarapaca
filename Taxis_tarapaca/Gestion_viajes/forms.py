@@ -152,3 +152,9 @@ class VehiculoForm(forms.ModelForm):
 
 class BusquedaVehiculoForm(forms.Form):
     busqueda = forms.CharField(label='Buscar Tarifa', max_length=100, required=False)
+    
+class SecretariaRegistroForm(forms.ModelForm):
+    class Meta:
+        model = Secretaria
+        fields = ['nombre', 'run', 'dv', 'apellido_p', 'apellido_m', 'genero', 'nombre_usu', 'fecha_nacimiento',
+                  'edad', 'tipo', 'email', 'prefijo', 'telefono', 'password']

@@ -143,7 +143,20 @@ class Usuario(models.Model):
     
 class Secretaria(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
-    
+    nombre = models.CharField(max_length=54,null=True,blank=True)
+    run = models.IntegerField(null=True,blank=True,unique=True)
+    dv = models.CharField(max_length=1,null=True,blank=True)
+    apellido_p = models.CharField(max_length=54,null=True,blank=True)
+    apellido_m = models.CharField(max_length=54,null=True,blank=True)
+    genero = models.CharField(max_length=254,null=True,blank=True)
+    nombre_usu = models.CharField(max_length=54,null=True,blank=True,unique=True)
+    fecha_nacimiento = models.DateField(null=True,blank=True)
+    edad = models.IntegerField(null=True,blank=True)
+    tipo = models.IntegerField(null=True,blank=True)
+    email = models.EmailField(max_length=254,null=True,blank=True,unique=True)
+    prefijo = models.ForeignKey(PrefijosPais,on_delete=models.SET_NULL,null=True,blank=True)
+    telefono = models.IntegerField(null=True,blank=True)
+    password = models.TextField(null=True,blank=True)
     deleted_at = models.DateTimeField(null=True,blank=True)
     created_at = models.DateTimeField(null=True,blank=True)
     

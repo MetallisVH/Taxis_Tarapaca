@@ -66,7 +66,7 @@ def check_usuario_login(request):
     
     if usuario is not None:
         
-        logged = 1 
+        logged = request.session.get('level',None)
         
         return JsonResponse({'logeado':logged})
     
@@ -136,12 +136,33 @@ def home_autenticar_usuario(request):
                 usuario = Usuario.objects.get(nombre_usu=username)
             except:
                 usuario = None
+        
+        if usuario is None:
+            try:
+                usuario = Secretaria.objects.get(nombre_usu=username)
+            except:
+                usuario = None
+        
+        if usuario is None:
+            try:
+                usuario = Secretaria.objects.get(email=username)
+            except:
+                usuario = None
+             
                 
         if usuario is not None and check_password(password,usuario.password):
             
             request.session['user'] = usuario.id
+            request.session['level'] = usuario.tipo
             
-            return redirect('http://localhost:8000/es/Usrs/')     
+            if usuario.tipo == 1:
+            
+                return redirect('http://localhost:8000/es/Usrs/')
+
+            elif usuario.tipo == 2:
+                
+                return redirect('http://localhost:8000/es/Usrs/gtt_secretarias/')
+            
         else:
             
             err_m = 'Credenciales incorrectas intente nuevamente.'
@@ -1226,3 +1247,19 @@ def logout(request):
     request.session.flush()
     
     return redirect('http://localhost:8000/es/')
+
+def adm_registrar_secretaria(request):
+    if request.method == 'POST':
+        form = SecretariaRegistroForm(request.POST)
+        if form.is_valid():
+            secretaria = form.save(commit=False)
+            
+            secretaria.password = make_password(secretaria.password)
+            
+            secretaria.save()
+            # Puedes realizar acciones adicionales aquí, como redireccionar a otra página
+            return render(request,'Gestion_viajes/adm_registrar_secretaria.html')
+    else:
+        form = SecretariaRegistroForm()
+
+    return render(request, 'Gestion_viajes/adm_registrar_secretaria.html', {'form': form})

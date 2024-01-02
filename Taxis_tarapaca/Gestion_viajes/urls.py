@@ -30,5 +30,6 @@ urlpatterns = [
     path("scr_bveh/",views.scr_buscar_vehiculos,name='scr_buscar_vehiculos'),
     path("scr_vveh/<int:id_vehiculo>/",views.scr_ver_datos_vehiculo,name='scr_ver_datos_vehiculo'),
     path("scr_eveh/<int:id_vehiculo>/",views.scr_editar_vehiculo,name='scr_editar_vehiculo'),
-    path("logout",views.logout,name='logout'),
+    path("logout/",views.logout,name='logout'),
+    path("adm_rsec/",views.adm_registrar_secretaria,name='adm_registrar_secretaria'),
 ]
