@@ -1,0 +1,33 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <h1>Lista de solicitudes de reserva</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha Reserva</th>
+                <th>Origen</th>
+                <!-- Añade más encabezados según tus campos -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.id }}</td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    <td>{{ reserva.origen }}</td>
+                    <!-- Añade más celdas según tus campos -->
+
+                    <td>
+                        <button><a href="#">Ver detalles</a></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

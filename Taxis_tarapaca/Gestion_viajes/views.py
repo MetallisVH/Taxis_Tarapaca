@@ -6,8 +6,6 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.core.serializers import serialize
 
-# Create your views here.
-
 def get_monto_tarifa(request):
     tipo_tarifa = request.GET.get('tipo_tarifa')
     
@@ -107,7 +105,7 @@ def home_registrar_usuario(request):
             
             nuevo_usu.password = make_password(nuevo_usu.password)
             
-            nuevo_usu.tipo = 0
+            nuevo_usu.tipo = 1
             
             nuevo_usu.save()
             
@@ -184,11 +182,15 @@ def usr_solicitud_reserva(request):
         
         if form.is_valid() and usuario is not None:
             
+            usuario_actual = Usuario.objects.get(id=usuario)
+            
             reserva_usuario = form.save(commit=False)
             
             reserva_usuario.estado_reserva = 0
             
             reserva_usuario.created_at = datetime.now()
+            
+            reserva_usuario.reservante = usuario_actual
             
             reserva_usuario.save()
             
@@ -1241,6 +1243,10 @@ def scr_editar_vehiculo(request,id_vehiculo):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_admin_reservas(request):
+    reservas = Reserva.objects.filter(estado_reserva=0,deleted_at=None)
+    return render(request, 'Gestion_viajes/scr_admin_reservas.html', {'reservas': reservas})
     
 def logout(request):
     

@@ -162,6 +162,7 @@ class Secretaria(models.Model):
     
 class Reserva(models.Model):
     id = models.AutoField(primary_key=True,unique=True)
+    reservante = models.ForeignKey(Usuario,on_delete=models.SET_NULL,blank=True,null=True,default=None)
     fecha_reserva = models.DateTimeField(null=True,blank=True)
     origen = models.CharField(max_length=254,null=True,blank=True)
     numero_origen = models.IntegerField(null=True,blank=True)
