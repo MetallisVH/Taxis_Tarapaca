@@ -31,6 +31,9 @@ urlpatterns = [
     path("scr_vveh/<int:id_vehiculo>/",views.scr_ver_datos_vehiculo,name='scr_ver_datos_vehiculo'),
     path("scr_eveh/<int:id_vehiculo>/",views.scr_editar_vehiculo,name='scr_editar_vehiculo'),
     path("scr_ares/",views.scr_admin_reservas,name='scr_admin_reservas'),
+    path("scr_vres/<int:id_reserva>/",views.scr_ver_datos_reserva,name='scr_ver_datos_reserva'),
+    path("scr_accr/<int:id_reserva>/",views.scr_aceptar_reserva,name='scr_aceptar_reserva'),
+    path("scr_rres/<int:id_reserva>/",views.scr_rechazar_reserva,name='scr_rechazar_reserva'),
     path("logout/",views.logout,name='logout'),
     path("adm_rsec/",views.adm_registrar_secretaria,name='adm_registrar_secretaria'),
 ]

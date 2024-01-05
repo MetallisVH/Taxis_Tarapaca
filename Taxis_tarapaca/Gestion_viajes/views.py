@@ -1245,8 +1245,70 @@ def scr_editar_vehiculo(request,id_vehiculo):
         return render(request,'Gestion_viajes/err_frb.html')
     
 def scr_admin_reservas(request):
-    reservas = Reserva.objects.filter(estado_reserva=0,deleted_at=None)
-    return render(request, 'Gestion_viajes/scr_admin_reservas.html', {'reservas': reservas})
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+    
+        reservas = Reserva.objects.filter(estado_reserva=0,deleted_at=None)
+        
+        return render(request, 'Gestion_viajes/scr_admin_reservas.html', {'reservas': reservas})
+    
+    else:
+        
+        return render('Gestion_viajes/err_frb.html')
+
+def scr_ver_datos_reserva(request,id_reserva):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+    
+        reserva_seleccionada = Reserva.objects.get(id=id_reserva)
+        
+        context = {'reserva':reserva_seleccionada}
+        
+        return render(request,'Gestion_viajes/scr_ver_datos_reserva.html',context)
+
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+
+def scr_aceptar_reserva(request,id_reserva):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        reserva_seleccionada = Reserva.objects.get(id=id_reserva)
+        
+        reserva_seleccionada.estado_reserva = 200
+        
+        reserva_seleccionada.save()
+        
+        return render(request,'Gestion_viajes/scr_aceptar_reserva_exito.html')
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_rechazar_reserva(request,id_reserva):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        reserva_seleccionada = Reserva.objects.get(id=id_reserva)
+        
+        reserva_seleccionada.estado_reserva = 400
+        
+        reserva_seleccionada.save()
+        
+        return render(request,'Gestion_viajes/scr_rechazar_reserva_exito.html')
+    
+    else:
+        
+        return render(request,'Gestion_viajes/err_frb.html')
     
 def logout(request):
     

@@ -24,7 +24,7 @@
                     <!-- Añade más celdas según tus campos -->
 
                     <td>
-                        <button><a href="#">Ver detalles</a></button>
+                        <button><a href="{% url 'scr_ver_datos_reserva' id_reserva=reserva.id %}">Ver detalles</a></button>
                     </td>
                 </tr>
             {% endfor %}
