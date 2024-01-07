@@ -13,7 +13,6 @@ urlpatterns = [
     path("usr_srap/",views.usr_busqueda_reserva,name='usr_busqueda_reserva'),
     path("usr_crec/",views.usr_reclamacion,name='usr_reclamacion'),
     path("scr_rtax/",views.scr_registrar_taxista,name='scr_registrar_taxista'),
-    path("scr_admtax/",views.scr_mostrar_taxistas,name='scr_mostrar_taxistas'),
     path("scr_btax/",views.scr_buscar_taxistas,name='scr_buscar_taxistas'),
     path("scr_vtax/<int:id_taxista>/",views.scr_ver_datos_taxista,name='scr_ver_datos_taxista'),
     path("scr_etax/<int:id_taxista>/",views.scr_editar_taxista,name="scr_editar_taxista"),
@@ -34,6 +33,9 @@ urlpatterns = [
     path("scr_vres/<int:id_reserva>/",views.scr_ver_datos_reserva,name='scr_ver_datos_reserva'),
     path("scr_accr/<int:id_reserva>/",views.scr_aceptar_reserva,name='scr_aceptar_reserva'),
     path("scr_rres/<int:id_reserva>/",views.scr_rechazar_reserva,name='scr_rechazar_reserva'),
+    path("scr_racc/",views.scr_lista_reservas,name='scr_lista_reservas'),
+    path("scr_drac/<int:id_reserva>/",views.scr_datos_reserva_aceptada,name='scr_datos_reserva_aceptada'),
+    path("scr_bgen/<int:Id_reserva>/",views.scr_generar_boleta,name='scr_generar_boleta'),
     path("logout/",views.logout,name='logout'),
     path("adm_rsec/",views.adm_registrar_secretaria,name='adm_registrar_secretaria'),
 ]

@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from .forms import *
 from datetime import datetime
 from .models import *
+from django.http import FileResponse
+import io
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from reportlab.pdfgen import canvas
 
 def get_monto_tarifa(request):
     tipo_tarifa = request.GET.get('tipo_tarifa')
@@ -480,34 +483,6 @@ def scr_registrar_taxista(request):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
-    
-def scr_mostrar_taxistas(request):
-    
-    usuario = request.session.get('user',None)
-    
-    if usuario is not None:
-        
-        form = BusquedaTaxistaForm()
-                
-        try:
-            
-            secretaria = Secretaria.objects.get(id=usuario)
-            
-        except:
-            
-            secretaria = None
-            
-        try:
-            
-            taxistas = Taxista.objects.filter(secretaria_encargada=secretaria,deleted_at=None)
-            
-        except:
-            
-            taxistas = None
-            
-        context = {'taxistas':taxistas,'busqueda_form':form}
-        
-        return render(request,'Gestion_viajes/scr_admin_taxistas.html',context)
     
 def scr_buscar_taxistas(request):
     
@@ -1309,6 +1284,119 @@ def scr_rechazar_reserva(request,id_reserva):
     else:
         
         return render(request,'Gestion_viajes/err_frb.html')
+    
+def scr_lista_reservas(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'GET':
+            
+            form = BusquedaReservaForm(request.GET)
+            
+            reservas = None
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    busqueda = form.cleaned_data['busqueda'].lower()
+                    
+                except:
+                    
+                    busqueda = form.cleaned_data['busqueda']
+                
+                try:
+                    
+                    reservas = Reserva.objects.filter(id=busqueda,estado_reserva=200,deleted_at=None)
+                    
+                except:
+                    
+                    reservas = None
+                    
+                if reservas is None:
+                    
+                    try:
+                        
+                        reservante = Usuario.objects.get(email=busqueda)
+                        
+                        reservas = Reserva.objects.filter(reservante__id=reservante.id)
+                        
+                    except:
+                        
+                        reservas = None
+                
+                if reservas is None:
+                    
+                    try:
+                        
+                        reservante = Usuario.objects.get(nombre_usu=busqueda)
+                        
+                        reservas = Reserva.objects.filter(reservante__id=reservante.id)
+                        
+                    except:
+                        
+                        reservas = None
+                
+                if reservas is None:
+                    
+                    reservas = Reserva.objects.filter(estado_reserva=200,deleted_at=None)
+                
+                context = {'reservas':reservas,'busqueda_form':form}
+                
+                return render(request,'Gestion_viajes/scr_reservas_aceptadas.html',context)
+            
+            else:
+                
+                form = BusquedaReservaForm()
+                
+                reservas = None
+                
+                context = {'reservas':reservas,'busqueda_form':form}
+                
+                return render(request,'Gestion_viajes/scr_reservas_aceptadas.html',context)
+        
+def scr_datos_reserva_aceptada(request,id_reserva):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        reserva_seleccionada = Reserva.objects.get(id=id_reserva)
+        
+        context = {'reserva':reserva_seleccionada}
+        
+        return render(request,'Gestion_viajes/scr_datos_reserva_aceptada.html',context)
+
+def scr_generar_boleta(request,Id_reserva,nombre_archivo='boleta_taxi_TaxiTarapaca.pdf'):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        buffer = io.BytesIO()
+        c = canvas.Canvas(buffer)
+        
+        c.setFont("Helvetica", 12)
+        
+        reserva_seleccionada = Reserva.objects.get(id=Id_reserva)
+        
+        tarifas = reserva_seleccionada.tarifa
+        
+        precio_total = reserva_seleccionada.tarifa.monto_tarifa
+        
+        texto_boleta = f"Tarifas aplicadas: {tarifas}\nPrecio total: ${precio_total}"
+        
+        c.drawString(100, 700, "Boleta de Taxi")
+        c.drawString(100, 680, "-" * 50)
+        c.drawString(100, 660, texto_boleta)
+        
+        c.save()
+        buffer.seek(0)
+
+        response = FileResponse(buffer, as_attachment=True, filename=nombre_archivo)
+        return response
     
 def logout(request):
     

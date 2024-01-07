@@ -1,0 +1,31 @@
+{% extends "secretarias_page.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+    <h1>Detalles de la Reserva</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{ reserva.id }}</td>
+        </tr>
+        <tr>
+            <th>Fecha Reserva</th>
+            <td>{{ reserva.fecha_reserva }}</td>
+        </tr>
+        <tr>
+            <th>Origen</th>
+            <td>{{ reserva.origen }}</td>
+        </tr>
+        <!-- Añade más filas según tus campos -->
+    </table>
+
+    <form action="{% url 'scr_generar_boleta' reserva.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Generar boleta</button>
+    </form>
+
+    <p><a href="{% url 'scr_lista_reservas' %}">Volver a la lista de reservas</a></p>
+{% endblock content %}
