@@ -1393,9 +1393,9 @@ def scr_datos_reserva_aceptada(request,id_reserva):
         
         return render(request,'Gestion_viajes/scr_datos_reserva_aceptada.html',context)
 
-def scr_generar_boleta(request,Id_reserva,nombre_archivo='boleta_taxi_TaxiTarapaca.pdf'):
+def scr_generar_boleta(request, Id_reserva, nombre_archivo='boleta_taxi_TaxiTarapaca.pdf'):
     
-    usuario = request.session.get('user',None)
+    usuario = request.session.get('user', None)
     
     if usuario is not None:
         
@@ -1407,22 +1407,35 @@ def scr_generar_boleta(request,Id_reserva,nombre_archivo='boleta_taxi_TaxiTarapa
         reserva_seleccionada = Reserva.objects.get(id=Id_reserva)
         
         tarifas = reserva_seleccionada.tarifa
-        
+        reservante = reserva_seleccionada.reservante.nombre +' '+ reserva_seleccionada.reservante.apellido_m +' '+ reserva_seleccionada.reservante.apellido_p
+        origen = reserva_seleccionada.tipo_origen.nombre + ' ' + reserva_seleccionada.origen + ' #' + str(reserva_seleccionada.numero_origen)
+        destino = reserva_seleccionada.tipo_destino.nombre + ' ' + reserva_seleccionada.destino + ' #' + str(reserva_seleccionada.numero_destino)
+        realizada_el = reserva_seleccionada.created_at
+        cant_pasajeros = reserva_seleccionada.cantidad_pasajeros
+        monto_tarifa = reserva_seleccionada.tarifa.monto_tarifa
         precio_total = reserva_seleccionada.tarifa.monto_tarifa
         
-        texto_boleta = f"Tarifas aplicadas: {tarifas}\nPrecio total: ${precio_total}"
+        print(cant_pasajeros)
         
         c.drawString(100, 700, "Boleta de Taxi")
         c.drawString(100, 680, "-" * 50)
-        c.drawString(100, 660, texto_boleta)
+
+        c.drawString(100, 660, f"Tarifas aplicadas: {tarifas} {monto_tarifa}")
+        c.drawString(100, 640, f"Precio total: ${precio_total}")
+        c.drawString(100, 620, f"Reservante: {reservante}")
+        c.drawString(100, 600, f"Origen: {origen}")
+        c.drawString(100, 580, f"Destino: {destino}")
+        c.drawString(100, 560, f"Realizada: {realizada_el}")
+        c.drawString(100, 540, f"cantidad de pasajeros: {cant_pasajeros}")
         
         c.save()
         buffer.seek(0)
 
         response = FileResponse(buffer, as_attachment=True, filename=nombre_archivo)
         return response
+
     
-def scr_ver_reclamos_no_atendidos(request):
+def scr_ver_reclamos_no_atendidos(request): 
     
     usuario = request.session.get('user',None)
     
