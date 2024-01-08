@@ -5,11 +5,11 @@
     <h1>¡Reclamo Atendido Exitosamente!</h1>
     <p>El reclamo ha sido atendido y resuelto con éxito.</p>
 
-    <p>Redireccionando a la <a href="{% url 'http://localhost:8000/es/scr_vcmt/' %}">Lista de reclamaciones</a> en 5 segundos...</p>
+    <p>Redireccionando a la <a href="http://localhost:8000/es/scr_vcmt/">Lista de reclamaciones</a> en 5 segundos...</p>
     
     <script>
         setTimeout(function(){
-            window.location.href = "{% url 'http://localhost:8000/es/scr_vcmt/' %}";
+            window.location.href = "http://localhost:8000/es/scr_vcmt/";
         }, 5000);  // Redirige después de 5 segundos (puedes ajustar el tiempo según tus preferencias)
     </script>
 {% endblock content %}
