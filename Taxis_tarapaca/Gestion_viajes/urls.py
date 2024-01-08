@@ -12,6 +12,7 @@ urlpatterns = [
     path("usr_slrs/",views.usr_solicitud_reserva,name='usr_solicitud_reserva'),
     path("usr_srap/",views.usr_busqueda_reserva,name='usr_busqueda_reserva'),
     path("usr_crec/",views.usr_reclamacion,name='usr_reclamacion'),
+    path("usr_sres/<int:id_ruta>",views.usr_realizar_reserva,name='usr_realizar_reserva'),
     path("scr_rtax/",views.scr_registrar_taxista,name='scr_registrar_taxista'),
     path("scr_btax/",views.scr_buscar_taxistas,name='scr_buscar_taxistas'),
     path("scr_vtax/<int:id_taxista>/",views.scr_ver_datos_taxista,name='scr_ver_datos_taxista'),

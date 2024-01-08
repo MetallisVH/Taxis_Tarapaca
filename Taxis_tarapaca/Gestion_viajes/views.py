@@ -433,6 +433,30 @@ def usr_reclamacion(request):
         
         return render(request,'Gestion_viajes/err_frb.html')
     
+def usr_realizar_reserva(request,id_ruta):
+    
+    usuario = request.session.get('user',None)
+    
+    user_inst = Usuario.objects.get(id=usuario)
+    
+    if usuario is not None:
+        
+        ruta_seleccionada = Ruta.objects.get(id=id_ruta,deleted_at=None)
+        
+        ruta_seleccionada.plazas_disponibles -= 1
+        
+        reserva = Reserva(
+            reservante = user_inst,
+            estado_reserva = 0,
+            ruta_asociada = ruta_seleccionada,
+        )
+        
+        reserva.save()
+        
+        ruta_seleccionada.save()
+        
+        return render(request,'Gestion_viajes/usr_solicitud_reserva_exito.html')
+    
 def scr_registrar_taxista(request):
     
     usuario = request.session.get('user',None)

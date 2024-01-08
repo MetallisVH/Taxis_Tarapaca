@@ -67,7 +67,9 @@
 
                 <p>Fecha del viaje: {{ ruta.fecha_viaje }} {{ ruta.hora_viaje }}<p>
 
-                
+                <p>Plazas disponibles: {{ ruta.plazas_disponibles }}<p>
+
+                <button><a href="{% url 'usr_realizar_reserva' id_ruta=ruta.id %}">Reservar</a></button>
 
                 <hr>
             
