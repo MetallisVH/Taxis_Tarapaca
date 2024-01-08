@@ -254,7 +254,7 @@ def usr_busqueda_reserva(request):
                 
                 if fecha_ruta is not None:
                     try:
-                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,fecha_viaje=fecha_ruta,deleted_at=None,plazas_disponibles__gt=0)
                     
                         if rutas_region is not None:
                     
@@ -265,7 +265,7 @@ def usr_busqueda_reserva(request):
                     if ciudad_origen is not None and ciudad_destino is not None:
                     
                         try:
-                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,fecha_viaje=fecha_ruta,deleted_at=None,plazas_disponibles__gt=0)
                         
                             if rutas_ciudad is not None:
                     
@@ -276,7 +276,7 @@ def usr_busqueda_reserva(request):
                     if comuna_origen is not None and comuna_destino is not None:
                     
                         try:
-                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,fecha_viaje=fecha_ruta,deleted_at=None)
+                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,fecha_viaje=fecha_ruta,deleted_at=None,plazas_disponibles__gt=0)
                         
                             if rutas_comuna is not None:
                     
@@ -285,7 +285,7 @@ def usr_busqueda_reserva(request):
                             rutas_comuna = None
                 else:
                     try:
-                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,deleted_at=None)
+                        rutas_region = Ruta.objects.filter(region=region_origen,region_destino=region_destino,deleted_at=None,plazas_disponibles__gt=0)
                         
                         if rutas_region is not None:
                         
@@ -296,7 +296,7 @@ def usr_busqueda_reserva(request):
                     if ciudad_origen is not None and ciudad_destino is not None:
                         
                         try:
-                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,deleted_at=None)
+                            rutas_ciudad = Ruta.objects.filter(ciudad=ciudad_origen,ciudad_destino=ciudad_destino,deleted_at=None,plazas_disponibles__gt=0)
                             
                             if rutas_ciudad is not None:
                         
@@ -307,7 +307,7 @@ def usr_busqueda_reserva(request):
                     if comuna_origen is not None and comuna_destino is not None:
                         
                         try:
-                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,deleted_at=None)
+                            rutas_comuna = Ruta.objects.filter(comuna=comuna_origen,comuna_destino=comuna_destino,deleted_at=None,plazas_disponibles__gt=0)
                             
                             if rutas_comuna is not None:
                         
@@ -321,7 +321,7 @@ def usr_busqueda_reserva(request):
                 
                 form = RutaForm()
         
-                rutas = Ruta.objects.filter(deleted_at=None)
+                rutas = Ruta.objects.filter(deleted_at=None,plazas_disponibles__gt=0)
                 
                 context = {'rutas':rutas,'form':form}
                 
@@ -331,7 +331,7 @@ def usr_busqueda_reserva(request):
         
         form = RutaForm()
         
-        rutas = Ruta.objects.filter(deleted_at=None)
+        rutas = Ruta.objects.filter(deleted_at=None,plazas_disponibles__gt=0)
         
         context = {'rutas':rutas,'form':form}
         

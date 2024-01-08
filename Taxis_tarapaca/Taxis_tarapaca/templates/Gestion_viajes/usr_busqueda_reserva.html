@@ -43,6 +43,11 @@
             <label for="{{ form.fecha_viaje.id_for_label }}">Fecha del viaje:</label>
             {{ form.fecha_viaje }}
         </div>
+
+        <button type="submit">Buscar rutas</button>
+
+        </br>
+        </br>
         
         {% if rutas %}
 
@@ -78,6 +83,5 @@
                     <p>No hay rutas para la fecha especificada<p>
         {% endif %}
         
-        <button type="submit">Buscar rutas</button>
     </form>
 {% endblock content %}
