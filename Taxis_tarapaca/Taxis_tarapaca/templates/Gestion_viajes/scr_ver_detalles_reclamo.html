@@ -1,0 +1,32 @@
+{% extends "secretarias_page.html" %}
+{% block title %}Detalles del Reclamo{% endblock title %}
+
+{% block content %}
+    <h1>Detalles del Reclamo</h1>
+
+    <table>
+        <tr>
+            <th>ID:</th>
+            <td>{{ reclamo.id }}</td>
+        </tr>
+        <tr>
+            <th>Usuario:</th>
+            <td>{{ reclamo.autor.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Fecha:</th>
+            <td>{{ reclamo.created_at }}</td>
+        </tr>
+        <tr>
+            <th>Descripción:</th>
+            <td>{{ reclamo.reclamacion }}</td>
+        </tr>
+        <!-- Agrega más filas según tus campos -->
+
+        <!-- Puedes incluir más detalles del reclamo aquí -->
+
+    </table>
+
+    <button><a href="{% url 'scr_atender_reclamo' id_reclamo=reclamo.id %}">Marcar como atendido</a></button>
+    <button><a href="{% url 'scr_ver_reclamos_no_atendidos' %}">Volver a la Lista de Reclamos</a></button>
+{% endblock content %}

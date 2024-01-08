@@ -1398,6 +1398,76 @@ def scr_generar_boleta(request,Id_reserva,nombre_archivo='boleta_taxi_TaxiTarapa
         response = FileResponse(buffer, as_attachment=True, filename=nombre_archivo)
         return response
     
+def scr_ver_reclamos_no_atendidos(request):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        if request.method == 'GET':
+            
+            form = BusquedaReclamoForm(request.GET)
+            
+            reclamos = None
+            
+            if form.is_valid():
+                
+                try:
+                    
+                    busqueda = form.cleaned_data['busqueda'].lower()
+                
+                except:
+                    
+                    busqueda = form.cleaned_data['busqueda']
+                
+                try:
+                    
+                    reclamos = Reclamo.objects.filter(estado=0,id=busqueda,deleted_at=None)
+                    
+                except:
+                    
+                    reclamos = None
+                
+                if reclamos is None:
+                    
+                    try:
+                        
+                        reclamos = Reclamo.objects.filter(estado=0,deleted_at=None)
+                    
+                    except:
+                        
+                        reclamos = None
+                
+                context = {'reclamos':reclamos,'busqueda_form':form}
+                
+                return render(request,'Gestion_viajes/scr_ver_comentarios.html',context)
+            
+def scr_ver_detalle_reclamo(request,id_reclamo):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        reclamo = Reclamo.objects.get(id=id_reclamo)
+        
+        context = {'reclamo':reclamo}
+        
+        return render(request,'Gestion_viajes/scr_ver_detalles_reclamo.html',context)
+    
+def scr_atender_reclamo(request,id_reclamo):
+    
+    usuario = request.session.get('user',None)
+    
+    if usuario is not None:
+        
+        reclamo_seleccionado = Reclamo.objects.get(id=id_reclamo)
+        
+        reclamo_seleccionado.estado = 200
+        
+        reclamo_seleccionado.save()
+        
+        return render(request,'Gestion_viajes/scr_atender_reclamo_exito.html')
+    
 def logout(request):
     
     request.session.flush()

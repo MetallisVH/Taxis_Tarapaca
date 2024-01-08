@@ -1,0 +1,37 @@
+{% extends "secretarias_page.html" %}
+{% block title %}Lista de Reclamos{% endblock title %}
+
+{% block content %}
+    <h1>Lista de Reclamos</h1>
+
+    <form action="{% url 'scr_ver_reclamos_no_atendidos' %}" method="GET">
+        <label for="search">Buscar:</label>
+        <input type="text" id="search" name="search" placeholder="Ingrese término de búsqueda">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <!-- Agrega más encabezados según tus campos -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamo in reclamos %}
+                <tr>
+                    <td>{{ reclamo.id }}</td>
+                    <td>{{ reclamo.autor.nombre }}</td>
+                    <td>{{ reclamo.created_at }}</td>
+                    <!-- Agrega más celdas según tus campos -->
+
+                    <td>
+                        <button><a href="{% url 'scr_ver_detalle_reclamo' id_reclamo=reclamo.id %}">Ver Detalles</a></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

@@ -161,3 +161,6 @@ class SecretariaRegistroForm(forms.ModelForm):
         
 class BusquedaReservaForm(forms.Form):
     busqueda = forms.CharField(label='Buscar Tarifa', max_length=100, required=False)
+
+class BusquedaReclamoForm(forms.Form):
+    busqueda = forms.CharField(label='Buscar Tarifa', max_length=100, required=False)

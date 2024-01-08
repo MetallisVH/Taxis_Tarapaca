@@ -36,6 +36,9 @@ urlpatterns = [
     path("scr_racc/",views.scr_lista_reservas,name='scr_lista_reservas'),
     path("scr_drac/<int:id_reserva>/",views.scr_datos_reserva_aceptada,name='scr_datos_reserva_aceptada'),
     path("scr_bgen/<int:Id_reserva>/",views.scr_generar_boleta,name='scr_generar_boleta'),
+    path("scr_vcmt/",views.scr_ver_reclamos_no_atendidos,name='scr_ver_reclamos_no_atendidos'),
+    path("scr_vdcm/<int:id_reclamo>/",views.scr_ver_detalle_reclamo,name='scr_ver_detalle_reclamo'),
+    path("scr_arec/<int:id_reclamo>/",views.scr_atender_reclamo,name='scr_atender_reclamo'),
     path("logout/",views.logout,name='logout'),
     path("adm_rsec/",views.adm_registrar_secretaria,name='adm_registrar_secretaria'),
 ]
